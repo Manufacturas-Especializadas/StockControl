@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Entradas-Salidas")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fe7ce83bf8e0ea778bf4a4951c4e0a3f6c4f1b78")]
 [assembly: System.Reflection.AssemblyProductAttribute("Entradas-Salidas")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Entradas-Salidas")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
