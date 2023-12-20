@@ -108,3 +108,18 @@ code {
     color: black;
 }
 
+table{
+    background-color: #ffffff;
+}
+
+th, td{
+    text-align: center;
+}
+
+.expandir{
+    transition: transform 0.3s ease-in-out;
+}
+
+.expandir:hover{
+    transform: scale(1.1);
+}
