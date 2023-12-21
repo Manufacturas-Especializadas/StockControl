@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Lj6txdVoXn9drZo3vTKRfjb/gYVDILdrV8pJSEVXwt8=",
+  "Hash": "EDDuCLBT0g8dC5QxVV6jkbAQwffqCBHY4BcagkvXhwY=",
   "Source": "Entradas-Salidas",
   "BasePath": "/",
   "Mode": "Root",
@@ -8871,25 +8871,6 @@
       "OriginalItemSpec": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Entradas-Salidas.bundle.scp.css"
     },
     {
-      "Identity": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\css\\app.css",
-      "SourceId": "Entradas-Salidas",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\",
-      "BasePath": "/",
-      "RelativePath": "css/app.css",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\app.css"
-    },
-    {
       "Identity": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "SourceId": "Entradas-Salidas",
       "SourceType": "Discovered",
@@ -8926,6 +8907,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Identity": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\css\\site.css",
+      "SourceId": "Entradas-Salidas",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "css/site.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\site.css"
     },
     {
       "Identity": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\favicon.png",

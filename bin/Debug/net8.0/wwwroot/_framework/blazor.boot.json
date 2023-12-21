@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "Entradas-Salidas",
   "resources": {
-    "hash": "sha256-+ngz/pxZtk1FycHYl7fxYBG6AhKOwR0z5IoDag2ZG1k=",
+    "hash": "sha256-0voUbmkhIPcKoIJTbYje/+p6eSxDqEYbXmj9nJo2/RM=",
     "jsModuleNative": {
       "dotnet.native.8.0.0.ung40zwziu.js": "sha256-LjLDIz9+J7uuiwMlQ4HbNx2BnSpphOtO2MwkoI28vdI="
     },
@@ -236,10 +236,10 @@
       "mscorlib.wasm": "sha256-cDuLeL3OCtVtiid/dyex1MVgbuzDSRwZxKzuP2Dp4mg=",
       "netstandard.wasm": "sha256-A0h86SDieTMoU/wU2JTszWCsUmMuguDcbap0b0BzsmI=",
       "System.Private.CoreLib.wasm": "sha256-/0DNIm/T0C07X7Tuz5uR8JvVCoAfEE2MnfPUSjyS9xc=",
-      "Entradas-Salidas.wasm": "sha256-k1fqYFeaWLEIkanG7hNrgZuHK4ixxmTRGp3tmbmzzyw="
+      "Entradas-Salidas.wasm": "sha256-lcXz4tbpZjI+WtH7xsC5uXrJ7Bm7vv8Qy0lP0r0cpk4="
     },
     "pdb": {
-      "Entradas-Salidas.pdb": "sha256-uwMY95hGK5h5xG78TXxqbMsqu1tZxy0CqP0+slmOceU="
+      "Entradas-Salidas.pdb": "sha256-PZkhnTtkhyRWeJ51Ku3rUU8+mIots2FVKNnbFnAHzs0="
     }
   },
   "cacheBootResources": true,
