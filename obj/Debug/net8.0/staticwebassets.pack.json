@@ -13,16 +13,16 @@
       "PackagePath": "staticwebassets\\Entradas-Salidas.styles.css"
     },
     {
-      "Id": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\css\\app.css",
-      "PackagePath": "staticwebassets\\css\\app.css"
-    },
-    {
       "Id": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
     },
     {
       "Id": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
       "Id": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\favicon.png",

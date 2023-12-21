@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "FVHCBhcuXOeF0QpHrTFBwDES0yJ+aT5/9qXXsf9oHezMMZxOV1QomueyvSPSOh1DmT7ZZZU6m5oRRg/7ui16gA==",
+  "dgSpecHash": "AXjNOouErDijo1vObDW26WGsDmDbdy5mHpaqpHxM5JQKEaLsBV4k9j1HbD9konZcobzS9i3jTLKT4narjI5gYQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\Entradas-Salidas.csproj",
   "expectedPackageFiles": [
@@ -10,6 +10,7 @@
     "C:\\Users\\Innovacion\\.nuget\\packages\\microsoft.aspnetcore.components\\8.0.0\\microsoft.aspnetcore.components.8.0.0.nupkg.sha512",
     "C:\\Users\\Innovacion\\.nuget\\packages\\microsoft.aspnetcore.components.analyzers\\8.0.0\\microsoft.aspnetcore.components.analyzers.8.0.0.nupkg.sha512",
     "C:\\Users\\Innovacion\\.nuget\\packages\\microsoft.aspnetcore.components.forms\\8.0.0\\microsoft.aspnetcore.components.forms.8.0.0.nupkg.sha512",
+    "C:\\Users\\Innovacion\\.nuget\\packages\\microsoft.aspnetcore.components.quickgrid\\8.0.0\\microsoft.aspnetcore.components.quickgrid.8.0.0.nupkg.sha512",
     "C:\\Users\\Innovacion\\.nuget\\packages\\microsoft.aspnetcore.components.web\\8.0.0\\microsoft.aspnetcore.components.web.8.0.0.nupkg.sha512",
     "C:\\Users\\Innovacion\\.nuget\\packages\\microsoft.aspnetcore.components.webassembly\\8.0.0\\microsoft.aspnetcore.components.webassembly.8.0.0.nupkg.sha512",
     "C:\\Users\\Innovacion\\.nuget\\packages\\microsoft.aspnetcore.components.webassembly.devserver\\8.0.0\\microsoft.aspnetcore.components.webassembly.devserver.8.0.0.nupkg.sha512",
