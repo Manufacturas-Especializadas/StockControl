@@ -1172,3 +1172,9 @@ C:\Users\Innovacion\Documents\Entradas-Salidas\obj\Debug\net8.0\compressed\gsman
 C:\Users\Innovacion\Documents\Entradas-Salidas\obj\Debug\net8.0\compressed\luic8ug0uq.gz
 C:\Users\Innovacion\Documents\Entradas-Salidas\obj\Debug\net8.0\compressed\w2f97ez00s.gz
 C:\Users\Innovacion\Documents\Entradas-Salidas\obj\Debug\net8.0\compressed\3om7idyvhq.gz
+C:\Users\Innovacion\Documents\Entradas-Salidas\bin\Debug\net8.0\wwwroot\_framework\Microsoft.AspNetCore.Components.QuickGrid.wasm
+C:\Users\Innovacion\Documents\Entradas-Salidas\bin\Debug\net8.0\wwwroot\_framework\Microsoft.AspNetCore.Components.QuickGrid.wasm.gz
+C:\Users\Innovacion\Documents\Entradas-Salidas\bin\Debug\net8.0\Microsoft.AspNetCore.Components.QuickGrid.dll
+C:\Users\Innovacion\Documents\Entradas-Salidas\obj\Debug\net8.0\webcil\Microsoft.AspNetCore.Components.QuickGrid.wasm
+C:\Users\Innovacion\Documents\Entradas-Salidas\obj\Debug\net8.0\compressed\sasagkak36.gz
+C:\Users\Innovacion\Documents\Entradas-Salidas\bin\Debug\net8.0\efpt.config.json

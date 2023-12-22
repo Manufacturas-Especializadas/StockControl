@@ -116,10 +116,10 @@ th, td{
     text-align: center;
 }
 
-.expandir{
+.expand{
     transition: transform 0.3s ease-in-out;
 }
 
-.expandir:hover{
+.expand:hover{
     transform: scale(1.1);
 }
