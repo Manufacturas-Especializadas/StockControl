@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="efpt.config.json" />
     <_ContentIncludedByDefault Remove="Pages\Entradas\Entradas.razor" />
   </ItemGroup>
 
