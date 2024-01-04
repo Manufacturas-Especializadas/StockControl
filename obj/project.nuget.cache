@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "AXjNOouErDijo1vObDW26WGsDmDbdy5mHpaqpHxM5JQKEaLsBV4k9j1HbD9konZcobzS9i3jTLKT4narjI5gYQ==",
+  "dgSpecHash": "oIni7SVM+hth4shIMiKY1S1fivyk/YbGE0DiAvtpnVmjmxfbsiiuflNm9XPrSU1CYknuolOtwFlEc/insaFlog==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\Entradas-Salidas.csproj",
+  "projectFilePath": "C:\\Users\\Innovacion\\Documents\\StockControl\\StockControl.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Innovacion\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Innovacion\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

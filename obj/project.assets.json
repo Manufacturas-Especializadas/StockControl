@@ -5087,11 +5087,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\Entradas-Salidas.csproj",
-      "projectName": "Entradas-Salidas",
-      "projectPath": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\Entradas-Salidas.csproj",
+      "projectUniqueName": "C:\\Users\\Innovacion\\Documents\\StockControl\\StockControl.csproj",
+      "projectName": "StockControl",
+      "projectPath": "C:\\Users\\Innovacion\\Documents\\StockControl\\StockControl.csproj",
       "packagesPath": "C:\\Users\\Innovacion\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\obj\\",
+      "outputPath": "C:\\Users\\Innovacion\\Documents\\StockControl\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

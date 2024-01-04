@@ -1,6 +1,6 @@
 ﻿{
    "CodeGenerationMode": 4,
-   "ContextClassName": "ENTRADAS_SALIDASContext",
+   "ContextClassName": "StockControlContext",
    "ContextNamespace": null,
    "DefaultDacpacSchema": null,
    "FilterSchemas": false,
@@ -9,7 +9,7 @@
    "OutputContextPath": null,
    "OutputPath": "Models",
    "PreserveCasingWithRegex": true,
-   "ProjectRootNamespace": "Entradas-Salidas",
+   "ProjectRootNamespace": "StockControl",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 2,
    "SelectedToBeGenerated": 0,
@@ -20,7 +20,7 @@
          "ObjectType": 0
       }
    ],
-   "UiHint": "desktop-5p8jjpq.ENTRADAS_SALIDAS.dbo",
+   "UiHint": "desktop-5p8jjpq.StockControl.dbo",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,

@@ -1,60 +1,60 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "Id": "C:\\Users\\Innovacion\\Documents\\StockControl\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
       "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
     },
     {
-      "Id": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\obj\\Debug\\net8.0\\compressed\\3wt3imfoxk.gz",
+      "Id": "C:\\Users\\Innovacion\\Documents\\StockControl\\obj\\Debug\\net8.0\\compressed\\3wt3imfoxk.gz",
       "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
     },
     {
-      "Id": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\obj\\Debug\\net8.0\\scopedcss\\bundle\\Entradas-Salidas.styles.css",
-      "PackagePath": "staticwebassets\\Entradas-Salidas.styles.css"
+      "Id": "C:\\Users\\Innovacion\\Documents\\StockControl\\obj\\Debug\\net8.0\\scopedcss\\bundle\\StockControl.styles.css",
+      "PackagePath": "staticwebassets\\StockControl.styles.css"
     },
     {
-      "Id": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "Id": "C:\\Users\\Innovacion\\Documents\\StockControl\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Id": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "Id": "C:\\Users\\Innovacion\\Documents\\StockControl\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Id": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\css\\site.css",
+      "Id": "C:\\Users\\Innovacion\\Documents\\StockControl\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
-      "Id": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\favicon.png",
+      "Id": "C:\\Users\\Innovacion\\Documents\\StockControl\\wwwroot\\favicon.png",
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {
-      "Id": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\icon-192.png",
+      "Id": "C:\\Users\\Innovacion\\Documents\\StockControl\\wwwroot\\icon-192.png",
       "PackagePath": "staticwebassets\\icon-192.png"
     },
     {
-      "Id": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\index.html",
+      "Id": "C:\\Users\\Innovacion\\Documents\\StockControl\\wwwroot\\index.html",
       "PackagePath": "staticwebassets\\index.html"
     },
     {
-      "Id": "C:\\Users\\Innovacion\\Documents\\Entradas-Salidas\\wwwroot\\sample-data\\weather.json",
+      "Id": "C:\\Users\\Innovacion\\Documents\\StockControl\\wwwroot\\sample-data\\weather.json",
       "PackagePath": "staticwebassets\\sample-data\\weather.json"
     },
     {
-      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Entradas-Salidas.Microsoft.AspNetCore.StaticWebAssets.props",
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.StockControl.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },
     {
-      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.Entradas-Salidas.props",
-      "PackagePath": "build\\Entradas-Salidas.props"
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.StockControl.props",
+      "PackagePath": "build\\StockControl.props"
     },
     {
-      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.Entradas-Salidas.props",
-      "PackagePath": "buildMultiTargeting\\Entradas-Salidas.props"
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.StockControl.props",
+      "PackagePath": "buildMultiTargeting\\StockControl.props"
     },
     {
-      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.Entradas-Salidas.props",
-      "PackagePath": "buildTransitive\\Entradas-Salidas.props"
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.StockControl.props",
+      "PackagePath": "buildTransitive\\StockControl.props"
     }
   ],
   "ElementsToRemove": []
