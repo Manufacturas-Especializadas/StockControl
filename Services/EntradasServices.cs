@@ -1,7 +1,7 @@
-﻿using Entradas_Salidas.Models;
+﻿using StockControl.Models;
 
 
-namespace Entradas_Salidas.Services
+namespace StockControl.Services
 {
     public class EntradasServices
     {

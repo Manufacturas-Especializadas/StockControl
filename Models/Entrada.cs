@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Entradas_Salidas.Models;
+namespace StockControl.Models;
 
 public partial class Entrada
 {
