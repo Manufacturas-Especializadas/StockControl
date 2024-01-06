@@ -1,16 +1,22 @@
 ﻿@page "/entradas"
 
+@using StockControl.Services;
+@using StockControl.Models;
 
 
+
+@inject IJSRuntime js;
+@inject EntradaServices serivces;
 
 <PageTitle>Entradas</PageTitle>
 
 
 
 
-
+<input type="file" @ref="fileInput" />
+<button @onclick="UploadFile">Subir Archivo</button>
 <div class="container">
-    <button class="btn btn-outline-primary mb-2 mt-3 rounded-2">ESCANEAR</button>
+    @* <button class="btn btn-primary mb-2 mt-3 rounded-2" @onclick="ScanBarcode">ESCANEAR</button> *@
     <div class="table-responive">
         <table class="table table-bordered table-striped">
             <thead>
@@ -20,9 +26,12 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach(var item in serivces.GetScannedBarcodes())
+                {
+                    <td>@item</td>
+                }
                 <tr>
-                    <th>1</th>
-                    <th>1</th>
+                   
                 </tr>
             </tbody>
         </table>
@@ -32,8 +41,21 @@
 
 
 
+
 @code {
-  
+    private ElementReference fileInput;
+
+    private async Task UploadFile()
+    {
+        var file = await js.InvokeAsync<IJSObjectReference>("getFile", fileInput);
+
+        if (file != null)
+        {
+            var scannedBarcode = await serivces.GetBarcodeNumer(file);
+            StateHasChanged(); // Actualiza el componente para reflejar los cambios en la lista de códigos de barras.
+        }
+    }
+
 
 
 }
