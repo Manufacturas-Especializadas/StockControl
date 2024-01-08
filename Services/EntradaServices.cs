@@ -16,10 +16,8 @@ namespace StockControl.Services
     {
         public partial class Scan
         {
-            public string scan { get; set;}
+            public string scan { get; set; }
         }
-
-
 
         private readonly StockControlContext _context;
 
@@ -97,42 +95,5 @@ namespace StockControl.Services
 
         //}
 
-        private List<string> scannedBarcodes = new List<string>();
-        
-        public List<string> GetScannedBarcodes()
-        {
-            return scannedBarcodes;
-        }
-
-        public async Task<string> GetBarcodeNumer(IJSObjectReference file)
-        {
-            try
-            {
-                var stream = await file.InvokeAsync<IJSObjectReference>("stream");
-                var bytes = await stream.InvokeAsync<byte[]>("arrayBuffer");
-
-                using (var memoryStream = new MemoryStream(bytes))
-                using (var streamReader = new StreamReader(memoryStream))
-                using (var csv = new CsvReader(streamReader, new CsvConfiguration(CultureInfo.InvariantCulture)))
-                {
-                    var records = csv.GetRecords<Scan>();
-
-                    foreach (var record in records)
-                    {
-                        var barcodeNumber = record.scan;
-                        scannedBarcodes.Add(barcodeNumber);
-                        return barcodeNumber;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al leer el archivo CSV: {ex.Message}");
-            }
-
-            return null;
-        }
-
-        
     }
 }

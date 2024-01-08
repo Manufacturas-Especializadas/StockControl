@@ -1,38 +1,48 @@
 ﻿@page "/entradas"
 
+@using CsvHelper
+@using CsvHelper.Configuration
 @using StockControl.Services;
 @using StockControl.Models;
+@using System.Data
+@using System.IO
+@using NPOI.XSSF.UserModel
+@using NPOI.SS.UserModel
+@using System.Globalization
 
 
 
 @inject IJSRuntime js;
-@inject EntradaServices serivces;
+@inject EntradaServices services;
 
 <PageTitle>Entradas</PageTitle>
 
 
 
 
-<input type="file" @ref="fileInput" />
-<button @onclick="UploadFile">Subir Archivo</button>
+
+<h3>Cargar archivo CSV</h3>
+<InputFile OnChange="@ImportCsvFile" />
 <div class="container">
     @* <button class="btn btn-primary mb-2 mt-3 rounded-2" @onclick="ScanBarcode">ESCANEAR</button> *@
     <div class="table-responive">
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>CODIGO</th>
-                    <th>CONTEO</th>
+                    <td>CODIGO</td>
                 </tr>
             </thead>
             <tbody>
-                @foreach(var item in serivces.GetScannedBarcodes())
+                @foreach (DataRow row in dt.Rows)
                 {
-                    <td>@item</td>
+                    <tr>
+                        @foreach (DataColumn col in dt.Columns)
+                        {
+                            <td>@row[col.ColumnName]</td>
+                        }
+                    </tr>
+
                 }
-                <tr>
-                   
-                </tr>
             </tbody>
         </table>
     </div>
@@ -43,19 +53,40 @@
 
 
 @code {
-    private ElementReference fileInput;
+    //Funcion para administrar excel
+    DataTable dt = new DataTable();
 
-    private async Task UploadFile()
+    async Task ImportCsvFile(InputFileChangeEventArgs e)
     {
-        var file = await js.InvokeAsync<IJSObjectReference>("getFile", fileInput);
+        var fileStream = e.File.OpenReadStream();
+        var ms = new MemoryStream();
+        await fileStream.CopyToAsync(ms);
+        fileStream.Close();
+        ms.Position = 0;
 
-        if (file != null)
+        using (var reader = new StreamReader(ms))
+        using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)))
         {
-            var scannedBarcode = await serivces.GetBarcodeNumer(file);
-            StateHasChanged(); // Actualiza el componente para reflejar los cambios en la lista de códigos de barras.
+            
+
+            // Leer registros y cargar en DataTable
+            csv.Read();
+            csv.ReadHeader();
+
+            foreach (var header in csv.HeaderRecord)
+            {
+                dt.Columns.Add(header);
+            }
+
+            while (csv.Read())
+            {
+                var row = dt.NewRow();
+                for (int i = 0; i < csv.HeaderRecord.Length; i++)
+                {
+                    row[i] = csv.GetField(i);
+                }
+                dt.Rows.Add(row);
+            }
         }
     }
-
-
-
 }
