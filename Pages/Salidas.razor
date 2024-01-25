@@ -1,0 +1,108 @@
+﻿@page "/salidas"
+
+@using CsvHelper
+@using CsvHelper.Configuration
+@using StockControl.Services;
+@using StockControl.Models;
+@using System.Data
+@using System.Text
+@using System.IO
+@using System.Globalization
+@using System.Threading;
+@using System.Diagnostics;
+@using Radzen.Blazor;
+
+@inject SalidaServices services;
+
+<PageTitle>Salidas</PageTitle>
+
+<h1 class="text-black-bold text-center">SALIDAS</h1>
+<h3 class="text-info">Cargar archivo</h3>
+<InputFile OnChange="@ImportCsvFile" class="btn btn-primary mb-2 mt-3" />
+
+<RadzenDataGrid TItem="Salida" Data="@salidas" AllowPaging="true" PageSize="10">
+    <Columns>
+        <RadzenDataGridColumn TItem="Salida" Property="Codigo" Title="N.PARTE" TextAlign="TextAlign.Center"/>
+    </Columns>
+</RadzenDataGrid>
+
+
+@code {
+    DataTable dt = new DataTable();
+    List<Salida> salidas = new List<Salida>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        salidas = await services.GetSalidas();
+    }
+
+    private async Task ImportCsvFile(InputFileChangeEventArgs e)
+    {
+        var fileStream = e.File.OpenReadStream();
+        var ms = new MemoryStream();
+        await fileStream.CopyToAsync(ms);
+        fileStream.Close();
+        ms.Position = 0;
+
+        using (var reader = new StreamReader(ms))
+        using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)))
+        {
+            // Leer registros y cargar en DataTable
+            csv.Read();
+            csv.ReadHeader();
+
+            foreach (var header in csv.HeaderRecord)
+            {
+                dt.Columns.Add(header);
+            }
+
+            // salidas.Clear();
+
+            // Diccionario para almacenar el conteo de cada código
+            Dictionary<string, int> codigoConteo = new Dictionary<string, int>();
+
+
+            while (await csv.ReadAsync())
+            {
+                var row = dt.NewRow();
+                for (int i = 0; i < csv.HeaderRecord.Length; i++)
+                {
+                    row[i] = csv.GetField(i);
+                }
+                dt.Rows.Add(row);
+
+                var code = row.IsNull(0) ? null : row[0].ToString();
+                if (!string.IsNullOrEmpty(code))
+                {
+                    // Actualiza el conteo en el diccionario
+                    if (codigoConteo.ContainsKey(code))
+                    {
+                        codigoConteo[code]++;
+                    }
+                    else
+                    {
+                        codigoConteo[code] = 1;
+                    }
+
+                    salidas.Add(new Salida { Codigo = code });
+                }
+            }
+
+            List<string> codigos = dt.Rows.Cast<DataRow>()
+                .Select(r => r.IsNull(0) ? null : r[0].ToString())
+                .Where(codigo => !string.IsNullOrEmpty(codigo))
+                .ToList();
+
+            await services.InserDataBase(codigos);
+
+            var filePath = Path.Combine(@"C:\Users\Innovacion\Documents\SRG100_data", e.File.Name);
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            salidas = await services.GetSalidas();
+        }
+    }
+}

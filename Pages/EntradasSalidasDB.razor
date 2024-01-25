@@ -1,0 +1,45 @@
+﻿@page "/BasedeDatos"
+
+@using CsvHelper
+@using CsvHelper.Configuration
+@using StockControl.Services;
+@using StockControl.Models;
+@using StockControl.Data;
+@using System.Data
+@using System.Text
+@using System.IO
+@using System.Globalization
+@using System.Threading;
+@using System.Diagnostics;
+@using Radzen.Blazor;
+
+
+@inject EntradasSalidasServices services;
+
+<PageTitle>Base de Datos</PageTitle>
+
+
+
+<RadzenDataGrid TItem="ResultadoEntradasSalidas" Data="@resultado" AllowPaging="true" PageSize="10" Style="" FilterMode="FilterMode.Advanced" AllowFiltering="true">
+    <Columns>
+        <RadzenDataGridColumn TItem="ResultadoEntradasSalidas" Property="Codigo" Title="N.PARTE" TextAlign="TextAlign.Center"/>
+        <RadzenDataGridColumn TItem="ResultadoEntradasSalidas" Property="CantidadEntrada" Title="ENTRADAS" TextAlign="TextAlign.Center"/>
+        <RadzenDataGridColumn TItem="ResultadoEntradasSalidas" Property="FechaEntrada" Title="FECHA DE ENTRADA" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn TItem="ResultadoEntradasSalidas" Property="CantidadSalida" Title="SALIDAS" TextAlign="TextAlign.Center"/>
+        <RadzenDataGridColumn TItem="ResultadoEntradasSalidas" Property="FechaSalida" Title="FECHA DE SALIDA" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn TItem="ResultadoEntradasSalidas" Property="CantidadFinal" Title="CANTIDAD RESTANTE" TextAlign="TextAlign.Center"/>
+    </Columns>
+</RadzenDataGrid>
+
+
+
+@code {
+    List<ResultadoEntradasSalidas> resultado = new List<ResultadoEntradasSalidas>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        resultado = await services.GetEntradasSalidas();
+
+    }
+}
