@@ -72,10 +72,11 @@ code {
 }
 
 .svg-icon {
-    width: 5em;
-    height: 5em;
+    display: block;
     color: black;
+    font-size: 5em;
 }
+
 
 table {
     background-color: #ffffff;
@@ -89,6 +90,6 @@ th, td {
     transition: transform 0.3s ease-in-out;
 }
 
-    .expand:hover {
-        transform: scale(1.1);
-    }
+.expand:hover {
+    transform: scale(1.1);
+}
