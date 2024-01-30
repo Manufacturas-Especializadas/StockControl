@@ -1,0 +1,89 @@
+﻿@page "/planner"
+
+@using StockControl.Services;
+@using StockControl.Models;
+@using System.Text.Json
+
+@inject IJSRuntime js;
+@inject EntradaServices services;
+
+<PageTitle>Entradas</PageTitle>
+
+
+
+
+<h1 class="text-black-bold text-center">PLANNER</h1>
+
+
+
+
+
+
+<div Class="rz-p-0 rz-p-md-12">
+    <RadzenTemplateForm TItem="Model" Data=@model Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
+        <RadzenRow Gap="1rem">
+            <RadzenColumn Size="12" SizeSM="6">
+                <RadzenStack>
+                    <RadzenFormField Text="Número de parte">
+                        <RadzenTextBox @bind-Value="@value"/>
+                    </RadzenFormField>
+                    <RadzenFormField Text="Número de parte">
+                        <RadzenTextBox @bind-Value="@value" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Número de parte">
+                        <RadzenTextBox @bind-Value="@value" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Número de parte">
+                        <RadzenTextBox @bind-Value="@value" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Número de parte">
+                        <RadzenTextBox @bind-Value="@value" />
+                    </RadzenFormField>
+                </RadzenStack>
+            </RadzenColumn>
+            <RadzenColumn Size="12" SizeSM="6">
+                <RadzenStack>
+                    <RadzenFormField Text="Número de parte">
+                        <RadzenTextBox @bind-Value="@value" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Número de parte">
+                        <RadzenTextBox @bind-Value="@value" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Número de parte">
+                        <RadzenTextBox @bind-Value="@value" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Número de parte">
+                        <RadzenTextBox @bind-Value="@value" />
+                    </RadzenFormField>
+                    <RadzenFormField Text="Número de parte">
+                        <RadzenTextBox @bind-Value="@value" />
+                    </RadzenFormField>
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"/>
+                </RadzenStack>
+            </RadzenColumn>
+        </RadzenRow>
+    </RadzenTemplateForm>
+</div>
+
+@code {
+    string value = "";
+
+    class Model
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+
+    Model model = new Model();
+
+
+    void OnSubmit(Model model)
+    {
+        Console.WriteLine($"Submit: {JsonSerializer.Serialize(model, new JsonSerializerOptions() { WriteIndented = true })}");
+    }
+
+    void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
+    {
+        Console.WriteLine($"InvalidSubmit: {JsonSerializer.Serialize(args, new JsonSerializerOptions() { WriteIndented = true })}");
+    }
+}
