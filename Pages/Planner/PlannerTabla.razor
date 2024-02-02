@@ -4,7 +4,6 @@
 @using StockControl.Models;
 @using System.Text.Json
 
-@inject IJSRuntime js;
 @inject EntradaServices services;
 
 <PageTitle>Entradas</PageTitle>
@@ -22,7 +21,9 @@
 <RadzenDataGrid TItem="Model" Data="@models" AllowPaging="true" PageSize="10">
     <Columns>
         <RadzenDataGridColumn TItem="Model" Property="FirstName" Title="N.PARTE" TextAlign="TextAlign.Center" />
-        <RadzenDataGridColumn TItem="Model" Property="LastName" Title=""/>
+        <RadzenDataGridColumn TItem="Model" Property="LastName" Title="CANTIDAD DE ENTRADAS" TextAlign="TextAlign.Center"/>
+        <RadzenDataGridColumn TItem="Model" Property="LastName" Title="CANTIDAD DE SALIDAS" TextAlign="TextAlign.Center"/>
+        <RadzenDataGridColumn TItem="Model" Property="LastName" Title="RESTANTE" TextAlign="TextAlign.Center"/>
     </Columns>
 </RadzenDataGrid>
 
@@ -38,15 +39,4 @@
     }
 
     Model model = new Model();
-
-
-    void OnSubmit(Model model)
-    {
-        Console.WriteLine($"Submit: {JsonSerializer.Serialize(model, new JsonSerializerOptions() { WriteIndented = true })}");
-    }
-
-    void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
-    {
-        Console.WriteLine($"InvalidSubmit: {JsonSerializer.Serialize(args, new JsonSerializerOptions() { WriteIndented = true })}");
-    }
 }
