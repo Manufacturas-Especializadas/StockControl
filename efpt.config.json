@@ -4,7 +4,7 @@
    "ContextNamespace": null,
    "DefaultDacpacSchema": null,
    "FilterSchemas": false,
-   "IncludeConnectionString": true,
+   "IncludeConnectionString": false,
    "ModelNamespace": null,
    "OutputContextPath": null,
    "OutputPath": "Models",
@@ -17,6 +17,10 @@
    "Tables": [
       {
          "Name": "[dbo].[ENTRADAS]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PLANNER]",
          "ObjectType": 0
       },
       {

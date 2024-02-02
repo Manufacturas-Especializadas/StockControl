@@ -8,22 +8,24 @@ namespace StockControl.Models;
 
 public partial class StockControlContext : DbContext
 {
-    public StockControlContext()
-    {
-    }
-
     public StockControlContext(DbContextOptions<StockControlContext> options)
         : base(options)
     {
     }
 
-    public virtual DbSet<Entrada> Entradas { get; set; }
-
-    public virtual DbSet<Salida> Salidas { get; set; }
+    public StockControlContext()
+    {
+    }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=WIN-PVPAQO25113;Database=StockControl;User Id=MESINNO03;Password=M3s@.dm1n!;MultipleActiveResultSets=true;Pooling=true;Integrated Security=false;Trust Server Certificate=true;");
+    => optionsBuilder.UseSqlServer("Server=WIN-PVPAQO25113;Database=StockControl;User Id=MESINNO03;Password=M3s@.dm1n!;MultipleActiveResultSets=true;Pooling=true;Integrated Security=false;Trust Server Certificate=true; Connect Timeout=30;");
+
+
+    public virtual DbSet<Entrada> Entradas { get; set; }
+
+    public virtual DbSet<Planner> Planners { get; set; }
+
+    public virtual DbSet<Salida> Salidas { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -37,6 +39,16 @@ public partial class StockControlContext : DbContext
             entity.Property(e => e.FechaRegistro)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Planner>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__PLANNER__3214EC071FE0ECE2");
+
+            entity.ToTable("PLANNER");
+
+            entity.Property(e => e.Codigo).IsUnicode(false);
+            entity.Property(e => e.Fecha).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Salida>(entity =>
