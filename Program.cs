@@ -16,6 +16,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<EntradaServices>();
 builder.Services.AddScoped<SalidaServices>();
 builder.Services.AddScoped<EntradasSalidasServices>();
+builder.Services.AddScoped<PlannerServices>();
 
 
 var app = builder.Build();
