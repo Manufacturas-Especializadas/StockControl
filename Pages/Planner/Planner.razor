@@ -2,9 +2,8 @@
 
 @using StockControl.Services;
 @using StockControl.Models;
-@using System.Text.Json
 
-@inject EntradaServices services;
+@inject PlannerServices services;
 @inject NavigationManager nav;
 
 <PageTitle>Entradas</PageTitle>
@@ -14,110 +13,43 @@
 
 <h1 class="text-black-bold text-center">PLANNER</h1>
 
-<div Class="rz-p-0 rz-p-md-12">
-    <RadzenTemplateForm TItem="Model" Data=@model Submit=@OnSubmit InvalidSubmit=@OnInvalidSubmit>
-        <RadzenRow Gap="1rem">
-            <RadzenColumn Size="12" SizeSM="6">
-                <RadzenFormField Text="Número de parte">
-                    <RadzenTextBox @bind-Value="@value" />
-                </RadzenFormField>
-                <RadzenFormField Text="Cantidad a fabricar">
-                    <RadzenNumeric Style="display: block" class="w-100" @bind-Value="@model.num" />
-                    @* <RadzenNumericRangeValidator Min="1" Max="1000" Text="NUMERO NO VALIDO" Popup="@popup" Style="position:absolute" /> *@
-                </RadzenFormField>
-
-                <RadzenFormField Text="Número de parte">
-                    <RadzenTextBox @bind-Value="@value" />
-                    @* <RadzenLabel Text="Cantidad a fabricar" />
-                    <RadzenNumeric Style="display: block" class="w-100" @bind-Value="@model.num" />
-                    <RadzenNumericRangeValidator Min="1" Max="1000" Text="NUMERO NO VALIDO" Popup="@popup" Style="position:absolute" /> *@
-                </RadzenFormField>
-
-                <RadzenFormField Text="Número de parte">
-                    <RadzenTextBox @bind-Value="@value" />
-                    @* <RadzenLabel Text="Cantidad a fabricar" />
-                    <RadzenNumeric Style="display: block" class="w-100" @bind-Value="@model.num" />
-                    <RadzenNumericRangeValidator Min="1" Max="1000" Text="NUMERO NO VALIDO" Popup="@popup" Style="position:absolute" /> *@
-                </RadzenFormField>
-
-                <RadzenFormField Text="Número de parte">
-                    <RadzenTextBox @bind-Value="@value" />
-                    @* <RadzenLabel Text="Cantidad a fabricar" />
-                    <RadzenNumeric Style="display: block" class="w-100" @bind-Value="@model.num" />
-                    <RadzenNumericRangeValidator Min="1" Max="1000" Text="NUMERO NO VALIDO" Popup="@popup" Style="position:absolute" /> *@
-                </RadzenFormField>
-
-                <RadzenFormField Text="Número de parte">
-                    <RadzenTextBox @bind-Value="@value" />
-                    @* <RadzenLabel Text="Cantidad a fabricar" />
-                    <RadzenNumeric Style="display: block" class="w-100" @bind-Value="@model.num" />
-                    <RadzenNumericRangeValidator Min="1" Max="1000" Text="NUMERO NO VALIDO" Popup="@popup" Style="position:absolute" /> *@
-                </RadzenFormField>
-            </RadzenColumn>
-            <RadzenColumn Size="12" SizeSM="6">
-                <RadzenFormField Text="Número de parte">
-                    <RadzenTextBox @bind-Value="@value" />
-                    @* <RadzenLabel Text="Cantidad a fabricar" />
-                    <RadzenNumeric Style="display: block" class="w-100" @bind-Value="@model.num" />
-                    <RadzenNumericRangeValidator Min="1" Max="1000" Text="NUMERO NO VALIDO" Popup="@popup" Style="position:absolute" /> *@
-                </RadzenFormField>
-
-                <RadzenFormField Text="Número de parte">
-                    <RadzenTextBox @bind-Value="@value" />
-                    @* <RadzenLabel Text="Cantidad a fabricar" />
-                    <RadzenNumeric Style="display: block" class="w-100" @bind-Value="@model.num" />
-                    <RadzenNumericRangeValidator Min="1" Max="1000" Text="NUMERO NO VALIDO" Popup="@popup" Style="position:absolute" /> *@
-                </RadzenFormField>
-
-                <RadzenFormField Text="Número de parte">
-                    <RadzenTextBox @bind-Value="@value" />
-                    @* <RadzenLabel Text="Cantidad a fabricar" />
-                    <RadzenNumeric Style="display: block" class="w-100" @bind-Value="@model.num" />
-                    <RadzenNumericRangeValidator Min="1" Max="1000" Text="NUMERO NO VALIDO" Popup="@popup" Style="position:absolute" /> *@
-                </RadzenFormField>
-
-                <RadzenFormField Text="Número de parte">
-                    <RadzenTextBox @bind-Value="@value" />
-                    @* <RadzenLabel Text="Cantidad a fabricar" />
-                    <RadzenNumeric Style="display: block" class="w-100" @bind-Value="@model.num" />
-                    <RadzenNumericRangeValidator Min="1" Max="1000" Text="NUMERO NO VALIDO" Popup="@popup" Style="position:absolute" /> *@
-                </RadzenFormField>
-
-                <RadzenFormField Text="Número de parte">
-                    <RadzenTextBox @bind-Value="@value" />
-                    @* <RadzenLabel Text="Cantidad a fabricar" />
-                    <RadzenNumeric Style="display: block" class="w-100" @bind-Value="@model.num" />
-                    <RadzenNumericRangeValidator Min="1" Max="1000" Text="NUMERO NO VALIDO" Popup="@popup" Style="position:absolute" /> *@
-                </RadzenFormField>
-                <RadzenButton ButtonType="ButtonType.Submit" Text="Submit" />
-            </RadzenColumn>
-        </RadzenRow>
-    </RadzenTemplateForm>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card bg-white">
+                <div class="card-body">
+                    <EditForm Model="planner" class="row g-3 needs-validation" OnValidSubmit="(() => Create())">
+                        <div class="col-12">
+                            <label class="form-label" for="validationCustom01">ShopOrder</label>
+                            <InputNumber class="form-control" id="validationCustom01" @bind-Value="planner.ShopOrder" required/>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="validationCustom02">N.Parte</label>
+                            <InputText class="form-control" id="validationCustom02" @bind-Value="planner.Codigo" required/>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label" for="validationCustoms03">Cantidad</label>
+                            <InputText class="form-control" id="validationCustom03" @bind-Value=planner.Cantidad required/>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label" for="validationCustoms04">Fecha</label>
+                            <InputDate class="form-control" id="validationCustom04" @bind-Value="planner.Fecha" required/>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Enviar</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 @code {
-    string value = "";
-    bool popup;
+    StockControl.Models.Planner planner = new StockControl.Models.Planner();
 
-    class Model
+
+    private async Task Create()
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public int num { get; set; }
-    }
-
-    Model model = new Model();
-
-
-    void OnSubmit(Model model)
-    {
-        Console.WriteLine($"Submit: {JsonSerializer.Serialize(model, new JsonSerializerOptions() { WriteIndented = true })}");
-        nav.NavigateTo("/planner/tabla");
-    }
-
-    void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
-    {
-        Console.WriteLine($"InvalidSubmit: {JsonSerializer.Serialize(args, new JsonSerializerOptions() { WriteIndented = true })}");
+        var create = await services.CREATE(planner);
     }
 }

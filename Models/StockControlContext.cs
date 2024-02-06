@@ -20,7 +20,6 @@ public partial class StockControlContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     => optionsBuilder.UseSqlServer("Server=WIN-PVPAQO25113;Database=StockControl;User Id=MESINNO03;Password=M3s@.dm1n!;MultipleActiveResultSets=true;Pooling=true;Integrated Security=false;Trust Server Certificate=true; Connect Timeout=30;");
 
-
     public virtual DbSet<Entrada> Entradas { get; set; }
 
     public virtual DbSet<Planner> Planners { get; set; }
@@ -47,6 +46,7 @@ public partial class StockControlContext : DbContext
 
             entity.ToTable("PLANNER");
 
+            entity.Property(e => e.Cantidad).IsUnicode(false);
             entity.Property(e => e.Codigo).IsUnicode(false);
             entity.Property(e => e.Fecha).HasColumnType("datetime");
         });
