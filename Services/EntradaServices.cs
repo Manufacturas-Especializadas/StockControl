@@ -19,7 +19,7 @@ namespace StockControl.Services
 
         public EntradaServices(StockControlContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context;
         }
 
         public async Task<List<Entrada>> GetEntradas()

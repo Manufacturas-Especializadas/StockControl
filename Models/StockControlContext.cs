@@ -17,8 +17,8 @@ public partial class StockControlContext : DbContext
     {
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    => optionsBuilder.UseSqlServer("Server=WIN-PVPAQO25113;Database=StockControl;User Id=MESINNO03;Password=M3s@.dm1n!;MultipleActiveResultSets=true;Pooling=true;Integrated Security=false;Trust Server Certificate=true; Connect Timeout=30;");
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //=> optionsBuilder.UseSqlServer("Server=WIN-PVPAQO25113;Database=StockControl;User Id=MESINNO03;Password=M3s@.dm1n!;MultipleActiveResultSets=true;Pooling=true;Integrated Security=false;Trust Server Certificate=true; Connect Timeout=30;");
 
     public virtual DbSet<Entrada> Entradas { get; set; }
 

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<StockControlContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Scoped);
+builder.Services.AddDbContext<StockControlContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -17,7 +17,7 @@ builder.Services.AddScoped<EntradaServices>();
 builder.Services.AddScoped<SalidaServices>();
 builder.Services.AddScoped<EntradasSalidasServices>();
 builder.Services.AddScoped<PlannerServices>();
-
+builder.Services.AddScoped<ShopOrderServices>();
 
 var app = builder.Build();
 

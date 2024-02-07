@@ -21,7 +21,7 @@ namespace StockControl.Services
 
         public SalidaServices(StockControlContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context)); ;
+            _context = context;
         }
 
         public async Task<List<Salida>> GetSalidas()

@@ -6,7 +6,7 @@
 @inject PlannerServices services;
 @inject NavigationManager nav;
 
-<PageTitle>Entradas</PageTitle>
+<PageTitle>Planner</PageTitle>
 
 
 
@@ -46,10 +46,11 @@
 
 @code {
     StockControl.Models.Planner planner = new StockControl.Models.Planner();
-
+    
 
     private async Task Create()
     {
         var create = await services.CREATE(planner);
+        nav.NavigateTo("/planner", true);
     }
 }
