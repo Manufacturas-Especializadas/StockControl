@@ -46,57 +46,56 @@ namespace StockControl.Services
         public async Task<List<ResultadoEntradasSalidas>> GetEntradasSalidas()
         {
             // Obtener todas las entradas y salidas de la base de datos
-            using (var context = new StockControlContext())
-            {
-                var entradas = await context.Entradas.ToListAsync();
-                var salidas = await context.Salidas.ToListAsync();
+            
+            var entradas = await _context.Entradas.ToListAsync();
+            var salidas = await _context.Salidas.ToListAsync();
 
-                // Agrupar las entradas por código y fecha, sumando la cantidad (conteo)
-                var entradasAgrupadas = entradas.GroupBy(e => new { e.Codigo, FechaRegistro = e.FechaRegistro.Date })
-                                                .Select(e => new ResultadoEntradasSalidas
-                                                {
-                                                    Codigo = e.Key.Codigo,
-                                                    CantidadEntrada = e.Sum(x => x.Conteo),
-                                                    CantidadSalida = 0,
-                                                    CantidadFinal = 0,
-                                                    FechaEntrada = e.Key.FechaRegistro.Date
-                                                })
-                                                .OrderBy(e => e.FechaEntrada)
-                                                .ToList();
+            // Agrupar las entradas por código y fecha, sumando la cantidad (conteo)
+            var entradasAgrupadas = entradas.GroupBy(e => new { e.Codigo, FechaRegistro = e.FechaRegistro.Date })
+                                            .Select(e => new ResultadoEntradasSalidas
+                                            {
+                                                Codigo = e.Key.Codigo,
+                                                CantidadEntrada = e.Sum(x => x.Conteo),
+                                                CantidadSalida = 0,
+                                                CantidadFinal = 0,
+                                                FechaEntrada = e.Key.FechaRegistro.Date
+                                            })
+                                            .OrderBy(e => e.FechaEntrada)
+                                            .ToList();
 
-                // Agrupar las salidas por código y fecha, sumando la cantidad (conteo)
-                // Agrupar las salidas por código y fecha, sumando la cantidad (conteo)
-                var salidasAgrupadas = salidas.GroupBy(s => new { s.Codigo, FechaRegistro = s.FechaRegistro.Date })
-                    .Select(s => new
-                    {
-                        Key = new KeyValuePair<string, DateTime>(s.Key.Codigo, s.Key.FechaRegistro.Date),
-                        Sum = s.Sum(x => x.Conteo)
-                    })
-                    .ToDictionary(s => s.Key, s => s.Sum);
-
-                // Iterar sobre las entradas agrupadas para calcular la cantidad de salidas y final
-                foreach (var entrada in entradasAgrupadas)
+            // Agrupar las salidas por código y fecha, sumando la cantidad (conteo)
+            // Agrupar las salidas por código y fecha, sumando la cantidad (conteo)
+            var salidasAgrupadas = salidas.GroupBy(s => new { s.Codigo, FechaRegistro = s.FechaRegistro.Date })
+                .Select(s => new
                 {
-                    var codigoFecha = new CodigoFecha { Codigo = entrada.Codigo, FechaRegistro = entrada.FechaEntrada };
-                    // Intentar obtener la cantidad de salidas correspondiente a la entrada actual
-                    if (salidasAgrupadas.TryGetValue(new KeyValuePair<string, DateTime>(codigoFecha.Codigo, codigoFecha.FechaRegistro),
-                        out var cantidadSalida))
-                    {
-                        // Asignar la cantidad de salidas y calcular la cantidad final
-                        entrada.CantidadSalida = cantidadSalida;
-                        entrada.CantidadFinal = entrada.CantidadEntrada - cantidadSalida;
-                        entrada.FechaSalida = cantidadSalida > 0 ? (DateTime?)codigoFecha.FechaRegistro : null;
-                    }
-                    else
-                    {
-                        // No hay salidas para esta entrada, establecer FechaSalida como null
-                        entrada.FechaSalida = null;
-                    }
-                }
+                    Key = new KeyValuePair<string, DateTime>(s.Key.Codigo, s.Key.FechaRegistro.Date),
+                    Sum = s.Sum(x => x.Conteo)
+                })
+                .ToDictionary(s => s.Key, s => s.Sum);
 
-                // Retornar las entradas agrupadas y calculadas
-                return entradasAgrupadas;
+            // Iterar sobre las entradas agrupadas para calcular la cantidad de salidas y final
+            foreach (var entrada in entradasAgrupadas)
+            {
+                var codigoFecha = new CodigoFecha { Codigo = entrada.Codigo, FechaRegistro = entrada.FechaEntrada };
+                // Intentar obtener la cantidad de salidas correspondiente a la entrada actual
+                if (salidasAgrupadas.TryGetValue(new KeyValuePair<string, DateTime>(codigoFecha.Codigo, codigoFecha.FechaRegistro),
+                    out var cantidadSalida))
+                {
+                    // Asignar la cantidad de salidas y calcular la cantidad final
+                    entrada.CantidadSalida = cantidadSalida;
+                    entrada.CantidadFinal = entrada.CantidadEntrada - cantidadSalida;
+                    entrada.FechaSalida = cantidadSalida > 0 ? (DateTime?)codigoFecha.FechaRegistro : null;
+                }
+                else
+                {
+                    // No hay salidas para esta entrada, establecer FechaSalida como null
+                    entrada.FechaSalida = null;
+                }
             }
+
+            // Retornar las entradas agrupadas y calculadas
+            return entradasAgrupadas;
+            
 
         }
 
