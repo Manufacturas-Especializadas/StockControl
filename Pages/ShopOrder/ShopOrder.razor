@@ -1,0 +1,133 @@
+﻿@page "/shoporder"
+
+@using StockControl.Services;
+@using StockControl.Models;
+
+@inject ShopOrderServices services;
+@inject NavigationManager nav;
+
+<PageTitle>ShopOrder</PageTitle>
+
+
+
+
+<h1 class="text-black-bold text-center">ShopOrder</h1>
+
+
+
+
+
+<div class="container">
+    <div class="input-group mb-3">
+        <input type="number" class="form-control-md" placeholder="Ingresa la ShopOrder">
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="button" @onclick="FindShopOrder">Buscar</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="table-responsive bg-white">
+                @if(showPlanner)
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ShopOrder</th>
+                                <th>N.parte</th>
+                                <th>Cantidad</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                @foreach (var item in planners)
+                                {
+                                    <th>@item.ShopOrder</th>
+                                    <th>@item.Codigo</th>
+                                    <th>@item.Cantidad</th>
+                                    <th>@item.Fecha.Value.ToShortDateString()</th>
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="table-responsive bg-white">
+                @if(showPartNumer)
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>N.parte</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                @foreach (var item in salidas)
+                                {
+                                    <th>@item.Codigo</th>
+                                    <th>@item.FechaRegistro.ToShortDateString()</th>
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    List<Planner> planners = new List<Planner>();
+    List<Salida> salidas = new List<Salida>();
+
+    bool showPlanner;
+    bool showPartNumer;
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        planners = await services.GetPlanner();
+        salidas = await services.GetSalidas();
+    }
+
+    private async Task FindShopOrder()
+    {
+        int shopOrder = 0;
+
+         List<Planner> plannersResult = await services.GetShopOrder(shopOrder);
+
+        if (plannersResult.Any())
+        {
+            DateTime? shopOrderDate = plannersResult.First().Fecha;
+
+            // Realiza una consulta para obtener los números de parte por fecha
+            List<Salida> salidasResult = await services.GetPartNumberByDate(shopOrderDate);
+
+            // Actualiza los datos después de obtenerlos
+            showPlanner = true;
+            showPartNumer = true;
+
+            // Actualiza las listas con los resultados obtenidos
+            planners = plannersResult;
+            salidas = salidasResult;
+        }
+        else
+        {
+            // Si no hay resultados, establece las banderas para ocultar las tablas
+            showPlanner = false;
+            showPartNumer = false;
+        }
+    }
+
+
+
+
+}
