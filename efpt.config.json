@@ -20,6 +20,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[HISTORIALINVENTARIO]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[PLANNER]",
          "ObjectType": 0
       },

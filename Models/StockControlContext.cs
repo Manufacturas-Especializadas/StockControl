@@ -13,10 +13,9 @@ public partial class StockControlContext : DbContext
     {
     }
 
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //=> optionsBuilder.UseSqlServer("Server=WIN-PVPAQO25113;Database=StockControl;User Id=MESINNO03;Password=M3s@.dm1n!;MultipleActiveResultSets=true;Pooling=true;Integrated Security=false;Trust Server Certificate=true; Connect Timeout=30;");
-
     public virtual DbSet<Entrada> Entradas { get; set; }
+
+    public virtual DbSet<Historialinventario> Historialinventarios { get; set; }
 
     public virtual DbSet<Planner> Planners { get; set; }
 
@@ -34,6 +33,17 @@ public partial class StockControlContext : DbContext
             entity.Property(e => e.FechaRegistro)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Historialinventario>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__HISTORIA__3214EC079E5E6119");
+
+            entity.ToTable("HISTORIALINVENTARIO");
+
+            entity.Property(e => e.Codigo).IsUnicode(false);
+            entity.Property(e => e.FechaEntrada).HasColumnType("datetime");
+            entity.Property(e => e.FechaSalida).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Planner>(entity =>

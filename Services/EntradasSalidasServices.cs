@@ -43,60 +43,73 @@ namespace StockControl.Services
             return _context.Salidas.ToList();
         }
 
-        public async Task<List<ResultadoEntradasSalidas>> GetEntradasSalidas()
+        public async Task<List<Historialinventario>> GetEntradasSalidas()
         {
-            // Obtener todas las entradas y salidas de la base de datos
-            
             var entradas = await _context.Entradas.ToListAsync();
             var salidas = await _context.Salidas.ToListAsync();
 
-            // Agrupar las entradas por código y fecha, sumando la cantidad (conteo)
-            var entradasAgrupadas = entradas.GroupBy(e => new { e.Codigo, FechaRegistro = e.FechaRegistro.Date })
-                                            .Select(e => new ResultadoEntradasSalidas
+            var historialInventario = new List<Historialinventario>();
+
+            // Agrupar las entradas por número de parte (código)
+            var entradasAgrupadas = entradas.GroupBy(e => e.Codigo)
+                                            .Select(g => new
                                             {
-                                                Codigo = e.Key.Codigo,
-                                                CantidadEntrada = e.Sum(x => x.Conteo),
-                                                CantidadSalida = 0,
-                                                CantidadFinal = 0,
-                                                FechaEntrada = e.Key.FechaRegistro.Date
+                                                Codigo = g.Key,
+                                                Entradas = g.OrderBy(e => e.FechaRegistro).ToList()
                                             })
-                                            .OrderBy(e => e.FechaEntrada)
                                             .ToList();
 
-            // Agrupar las salidas por código y fecha, sumando la cantidad (conteo)
-            // Agrupar las salidas por código y fecha, sumando la cantidad (conteo)
-            var salidasAgrupadas = salidas.GroupBy(s => new { s.Codigo, FechaRegistro = s.FechaRegistro.Date })
-                .Select(s => new
-                {
-                    Key = new KeyValuePair<string, DateTime>(s.Key.Codigo, s.Key.FechaRegistro.Date),
-                    Sum = s.Sum(x => x.Conteo)
-                })
-                .ToDictionary(s => s.Key, s => s.Sum);
+            // Agrupar las salidas por número de parte (código)
+            var salidasAgrupadas = salidas.GroupBy(s => s.Codigo)
+                                            .Select(g => new
+                                            {
+                                                Codigo = g.Key,
+                                                Salidas = g.OrderBy(s => s.FechaRegistro).ToList()
+                                            })
+                                            .ToList();
 
-            // Iterar sobre las entradas agrupadas para calcular la cantidad de salidas y final
-            foreach (var entrada in entradasAgrupadas)
+            // Iterar sobre cada grupo de entradas
+            foreach (var entradaGroup in entradasAgrupadas)
             {
-                var codigoFecha = new CodigoFecha { Codigo = entrada.Codigo, FechaRegistro = entrada.FechaEntrada };
-                // Intentar obtener la cantidad de salidas correspondiente a la entrada actual
-                if (salidasAgrupadas.TryGetValue(new KeyValuePair<string, DateTime>(codigoFecha.Codigo, codigoFecha.FechaRegistro),
-                    out var cantidadSalida))
+                var codigo = entradaGroup.Codigo;
+                var entradasGrupo = entradaGroup.Entradas;
+
+                // Obtener el grupo de salidas correspondiente al código
+                var salidasGrupo = salidasAgrupadas.FirstOrDefault(s => s.Codigo == codigo)?.Salidas ?? new List<Salida>();
+
+                // Inicializar la cantidad final para el código actual
+                var cantidadFinal = 0;
+
+                // Iterar sobre cada entrada del grupo
+                foreach (var entrada in entradasGrupo)
                 {
-                    // Asignar la cantidad de salidas y calcular la cantidad final
-                    entrada.CantidadSalida = cantidadSalida;
-                    entrada.CantidadFinal = entrada.CantidadEntrada - cantidadSalida;
-                    entrada.FechaSalida = cantidadSalida > 0 ? (DateTime?)codigoFecha.FechaRegistro : null;
-                }
-                else
-                {
-                    // No hay salidas para esta entrada, establecer FechaSalida como null
-                    entrada.FechaSalida = null;
+                    // Sumar la cantidad de la entrada actual
+                    cantidadFinal += entrada.Conteo;
+
+                    // Restar la cantidad de las salidas que ocurrieron antes de esta entrada
+                    cantidadFinal -= salidasGrupo.Where(s => s.FechaRegistro.Date <= entrada.FechaRegistro.Date)
+                                                 .Sum(s => s.Conteo);
+
+                    // Crear una instancia de HistorialInventario y agregarla a la lista
+                    var historial = new Historialinventario
+                    {
+                        Codigo = codigo,
+                        CantidadEntrada = entrada.Conteo,
+                        FechaEntrada = entrada.FechaRegistro.Date,
+                        CantidadSalida = 0, // Inicialmente no hay salidas para esta entrada
+                        FechaSalida = null, // Inicialmente no hay fecha de salida
+                        CantidadFinal = cantidadFinal
+                    };
+                    historialInventario.Add(historial);
                 }
             }
 
-            // Retornar las entradas agrupadas y calculadas
-            return entradasAgrupadas;
-            
+            // Guardar el historial de inventario en la base de datos
+            await _context.Historialinventarios.AddRangeAsync(historialInventario);
+            await _context.SaveChangesAsync();
 
+            // Retornar el historial de inventario
+            return historialInventario;
         }
 
     }
