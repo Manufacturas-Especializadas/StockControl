@@ -4,6 +4,7 @@
 @using StockControl.Models;
 
 @inject ShopOrderServices services;
+@inject IJSRuntime js;
 @inject NavigationManager nav;
 
 <PageTitle>ShopOrder</PageTitle>
@@ -19,16 +20,16 @@
 
 <div class="container">
     <div class="input-group mb-3">
-        <input type="number" class="form-control-md" placeholder="Ingresa la ShopOrder">
+        <input type="number" class="form-control-md p-1 rounded-2" placeholder="Ingresa la ShopOrder" @bind="shopOrder">
         <div class="input-group-append">
-            <button class="btn btn-primary" type="button" @onclick="FindShopOrder">Buscar</button>
+            <button class="btn btn-primary ms-2" type="button" @onclick="FindShopOrder">Buscar</button>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6">
             <div class="table-responsive bg-white">
-                @if(showPlanner)
-                {
+@*                 @if(showPlanner)
+                { *@
                     <table class="table">
                         <thead>
                             <tr>
@@ -39,25 +40,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                @foreach (var item in planners)
-                                {
-                                    <th>@item.ShopOrder</th>
-                                    <th>@item.Codigo</th>
-                                    <th>@item.Cantidad</th>
-                                    <th>@item.Fecha.Value.ToShortDateString()</th>
-                                }
-                            </tr>
+                            @foreach (var item in filteredPlanner)
+                            {
+                                <tr>
+                                    <td>@item.ShopOrder</td>
+                                    <td>@item.Codigo</td>
+                                    <td>@item.Cantidad</td>
+                                    <td>@item.Fecha.Value.ToShortDateString()</td>
+                                </tr>   
+                            }
                         </tbody>
                     </table>
-                }
+                @* } *@
             </div>
         </div>
 
         <div class="col-sm-6">
             <div class="table-responsive bg-white">
-                @if(showPartNumer)
-                {
+@*                 @if(showPartNumer)
+                { *@
                     <table class="table">
                         <thead>
                             <tr>
@@ -66,68 +67,109 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                @foreach (var item in salidas)
-                                {
-                                    <th>@item.Codigo</th>
-                                    <th>@item.FechaRegistro.ToShortDateString()</th>
-                                }
-                            </tr>
+                            @foreach (var item in filteredSalidas)
+                            {
+                                <tr>
+                                    <td>@item.Codigo</td>
+                                    <td>@item.FechaRegistro.ToShortDateString()</td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
-                }
+                @* } *@
             </div>
         </div>
     </div>
 </div>
 
 
+@* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title text-danger" id="exampleModalLabel">ADVERTENCIA</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-danger">La fecha no coincide con el numero de parte o no existe la ShopOrder</p>
+            </div>
+        </div>
+    </div>
+</div> *@
+
 
 @code {
+    int shopOrder;
+
     List<Planner> planners = new List<Planner>();
     List<Salida> salidas = new List<Salida>();
+
+    List<Planner> filteredPlanner = new List<Planner>();
+    List<Salida> filteredSalidas = new List<Salida>();
 
     bool showPlanner;
     bool showPartNumer;
 
-
-
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        planners = await services.GetPlanner();
-        salidas = await services.GetSalidas();
+
+        planners = services.GetPlans();
+        salidas = services.GetSalidaList();
+
+        filteredPlanner = new List<Planner>();
+        filteredSalidas = new List<Salida>();
+
     }
 
-    private async Task FindShopOrder()
+    private void FindShopOrder()
     {
-        int shopOrder = 0;
 
-         List<Planner> plannersResult = await services.GetShopOrder(shopOrder);
-
-        if (plannersResult.Any())
+        var plannerResult = planners.Where(p => p.ShopOrder == shopOrder).ToList();
+        if (plannerResult.Any())
         {
-            DateTime? shopOrderDate = plannersResult.First().Fecha;
+            var ShopOrderDate = plannerResult.First().Fecha.Value.Date;
+            var salidResult = services.GetPartNumberByDate(ShopOrderDate);
 
-            // Realiza una consulta para obtener los números de parte por fecha
-            List<Salida> salidasResult = await services.GetPartNumberByDate(shopOrderDate);
+            if (salidResult.Any())
+            {
 
-            // Actualiza los datos después de obtenerlos
-            showPlanner = true;
-            showPartNumer = true;
+                filteredPlanner = plannerResult;
+                filteredSalidas = salidResult;
+                showPlanner = false;
+                showPartNumer = false;
 
-            // Actualiza las listas con los resultados obtenidos
-            planners = plannersResult;
-            salidas = salidasResult;
+            }
+            else
+            {
+                
+                // ShowModal();
+                FilterClean();
+
+            }
         }
         else
         {
-            // Si no hay resultados, establece las banderas para ocultar las tablas
-            showPlanner = false;
-            showPartNumer = false;
+
+            // ShowModal();
+            FilterClean();
+
         }
+
+        StateHasChanged();
     }
 
+    // private async Task ShowModal()
+    // {
+    //     await js.InvokeVoidAsync("$('#exampleModal').modal('show')");
+    // }
 
+    private void FilterClean()
+    {
+   
+        filteredPlanner = new List<Planner>();
+        filteredSalidas = new List<Salida>();
+        showPlanner = true;
+        showPartNumer = true;
 
-
+    }
 }

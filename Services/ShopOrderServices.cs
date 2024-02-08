@@ -13,14 +13,14 @@ namespace StockControl.Services
             _context = context;
         }
 
-        public async Task<List<Planner>> GetPlanner()
+        public List<Salida> GetSalidaList()
         {
-            return await _context.Planners.ToListAsync();
+            return _context.Salidas.ToList();
         }
 
-        public async Task<List<Salida>> GetSalidas()
+        public List<Planner> GetPlans()
         {
-            return await _context.Salidas.ToListAsync();
+            return _context.Planners.ToList();
         }
 
         public async Task<List<Planner>> GetShopOrder(int shopOrder)
@@ -29,9 +29,9 @@ namespace StockControl.Services
             return result;
         }
 
-        public async Task<List<Salida>> GetPartNumberByDate(DateTime? date)
+        public List<Salida> GetPartNumberByDate(DateTime date)
         {
-            var result = await _context.Salidas.Where(p => p.FechaRegistro == date).ToListAsync();
+            var result = _context.Salidas.Where(p => p.FechaRegistro.Date == date).ToList();
             return result;
         }
     }
