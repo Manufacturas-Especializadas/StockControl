@@ -4,6 +4,7 @@ using StockControl.Data;
 using StockControl.Services;
 using StockControl.Models;
 using Microsoft.EntityFrameworkCore;
+using Blazored.LocalStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddDbContext<StockControlContext>(options => options.UseSqlServ
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddScoped<EntradaServices>();
 builder.Services.AddScoped<SalidaServices>();

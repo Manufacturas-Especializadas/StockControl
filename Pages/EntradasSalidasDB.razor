@@ -11,10 +11,11 @@
 @using System.Globalization
 @using System.Threading;
 @using System.Diagnostics;
-@using Radzen.Blazor;
+@using Blazored.LocalStorage;
 
 
 @inject EntradasSalidasServices services;
+@inject ILocalStorageService localStorage;
 
 <PageTitle>Base de Datos</PageTitle>
 
@@ -39,7 +40,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        resultado = await services.GetEntradasSalidas();
 
+        await LoadData();
+
+    }
+
+    private async Task LoadData()
+    {
+        resultado = await services.GetEntradasSalidas();
     }
 }
