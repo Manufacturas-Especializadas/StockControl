@@ -5,10 +5,20 @@ using StockControl.Services;
 using StockControl.Models;
 using Microsoft.EntityFrameworkCore;
 using Blazored.LocalStorage;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<StockControlContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services
+    .AddBlazorise(options =>
+    {
+        options.Immediate = true;
+    })
+    .AddBootstrapProviders()
+    .AddFontAwesomeIcons();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
