@@ -24,6 +24,10 @@
 <h1 class="text-black-bold text-center">ENTRADAS</h1>
 <h3 class="text-info">Cargar archivo</h3>
 
+<Alert @ref="alertRef" Color="Color.Success" Visible="@showAlert" Dismisable="true">
+    Archivo cargado correctamente
+</Alert>
+
 <InputFile OnChange="@ImportCsvFile" class="btn btn-primary mb-2 mt-3 rounded-2" />
 
 <RadzenDataGrid TItem="Entrada" Data="@entradas" AllowPaging="true" PageSize="10">
@@ -37,6 +41,9 @@
     //Funcion para administrar excel
     DataTable dt = new DataTable();
     List<Entrada> entradas = new List<Entrada>();
+
+    bool showAlert = false;
+    Alert alertRef;
 
     protected override async Task OnInitializedAsync()
     {
@@ -123,22 +130,16 @@
             // Actualizar la lista de entradas después de la inserción en la base de datos
             entradas = await services.GetEntradas();
 
-            await DemoSuccess("La carga del archivo se completó correctamente.");
+            showAlert = true;
+            StateHasChanged();
+
+            await Task.Delay(5000);
         }
         catch(Exception ex)
         {
-            await DemoError("Error al procesar el archivo: " + ex.Message);
+            Debug.WriteLine($"Error al insertar el archivo: {ex}");
         }
-        
+
     }
 
-    private async Task DemoSuccess(string message)
-    {
-        await js.InvokeVoidAsync("ShowToastr", "success", message);
-    }
-
-    private async Task DemoError(string message)
-    {
-        await js.InvokeVoidAsync("ShowToastr", "error", message);
-    }
 }
