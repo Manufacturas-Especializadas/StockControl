@@ -2,7 +2,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace StockControl.Models;
 
@@ -17,4 +16,12 @@ public partial class Planner
     public DateTime? Fecha { get; set; }
 
     public string Cantidad { get; set; }
+
+    public string Codigo2 { get; set; }
+
+    public string Codigo3 { get; set; }
+
+    public string Codigo4 { get; set; }
+
+    public string Codigo5 { get; set; }
 }

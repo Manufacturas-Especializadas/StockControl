@@ -15,26 +15,45 @@
 
 <div class="container mt-4">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-8">
             <div class="card bg-white">
                 <div class="card-body">
                     <EditForm Model="planner" class="row g-3 needs-validation" OnValidSubmit="(() => Create())">
-                        <div class="col-12">
-                            <label class="form-label" for="validationCustom01">ShopOrder</label>
-                            <InputNumber class="form-control" id="validationCustom01" @bind-Value="planner.ShopOrder" required/>
+                        <div class="col">
+                            <label class="form-label">ShopOrder</label>
+                            <InputNumber class="form-control" @bind-Value="planner.ShopOrder" required />
                         </div>
                         <div class="col-12">
-                            <label class="form-label" for="validationCustom02">N.Parte</label>
-                            <InputText class="form-control" id="validationCustom02" @bind-Value="planner.Codigo" required/>
+                            <label class="form-label">N.Parte</label>
+                            <InputText class="form-control" @bind-Value="planner.Codigo" required />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">N.Parte</label>
+                            <InputText class="form-control" @bind-Value="planner.Codigo2" />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">N.Parte</label>
+                            <InputText class="form-control" @bind-Value="planner.Codigo3" />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">N.Parte</label>
+                            <InputText class="form-control" @bind-Value="planner.Codigo4" />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">N.Parte</label>
+                            <InputText class="form-control" @bind-Value="planner.Codigo5" />
                         </div>
                         <div class="col-6">
-                            <label class="form-label" for="validationCustoms03">Cantidad</label>
-                            <InputText class="form-control" id="validationCustom03" @bind-Value=planner.Cantidad required/>
+                            <label class="form-label">Cantidad</label>
+                            <InputText class="form-control" @bind-Value=planner.Cantidad required />
                         </div>
                         <div class="col-6">
-                            <label class="form-label" for="validationCustoms04">Fecha</label>
-                            <InputDate class="form-control" id="validationCustom04" @bind-Value="planner.Fecha" required/>
+                            <label class="form-label">Fecha</label>
+                            <InputDate class="form-control" @bind-Value="planner.Fecha" required />
                         </div>
+                        <Alert @ref="alertRef" Color="Color.Success" Visible="@showAlert" Dismisable="true">
+                            Registro nuevo completado
+                        </Alert>
                         <button class="btn btn-primary" type="submit">Enviar</button>
                     </EditForm>
                 </div>
@@ -46,11 +65,21 @@
 
 @code {
     StockControl.Models.Planner planner = new StockControl.Models.Planner();
-    
+
+    bool showAlert = false;
+    Alert alertRef;
 
     private async Task Create()
     {
         var create = await services.CREATE(planner);
+
+        showAlert = true;
+        StateHasChanged();
+
+        await Task.Delay(5000);
+
+
         nav.NavigateTo("/planner", true);
+
     }
 }

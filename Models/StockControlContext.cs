@@ -54,6 +54,18 @@ public partial class StockControlContext : DbContext
 
             entity.Property(e => e.Cantidad).IsUnicode(false);
             entity.Property(e => e.Codigo).IsUnicode(false);
+            entity.Property(e => e.Codigo2)
+                .IsUnicode(false)
+                .HasColumnName("Codigo_2");
+            entity.Property(e => e.Codigo3)
+                .IsUnicode(false)
+                .HasColumnName("Codigo_3");
+            entity.Property(e => e.Codigo4)
+                .IsUnicode(false)
+                .HasColumnName("Codigo_4");
+            entity.Property(e => e.Codigo5)
+                .IsUnicode(false)
+                .HasColumnName("Codigo_5");
             entity.Property(e => e.Fecha).HasColumnType("datetime");
         });
 
