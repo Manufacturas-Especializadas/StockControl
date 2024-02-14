@@ -30,6 +30,10 @@
       {
          "Name": "[dbo].[SALIDAS]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SHOPORDER]",
+         "ObjectType": 0
       }
    ],
    "UiHint": "win-pvpaqo25113.StockControl.dbo",

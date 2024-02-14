@@ -21,6 +21,8 @@ public partial class StockControlContext : DbContext
 
     public virtual DbSet<Salida> Salidas { get; set; }
 
+    public virtual DbSet<Shoporder> Shoporders { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Entrada>(entity =>
@@ -79,6 +81,17 @@ public partial class StockControlContext : DbContext
             entity.Property(e => e.FechaRegistro)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Shoporder>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__SHOPORDE__3214EC0791B31FAB");
+
+            entity.ToTable("SHOPORDER");
+
+            entity.Property(e => e.Codigo).IsUnicode(false);
+            entity.Property(e => e.FechaShopOrder).HasColumnType("datetime");
+            entity.Property(e => e.ShopOrder1).HasColumnName("ShopOrder");
         });
 
         OnModelCreatingPartial(modelBuilder);

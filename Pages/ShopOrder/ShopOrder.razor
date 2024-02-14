@@ -16,7 +16,9 @@
 
 
 
-
+@* <Alert @ref="notFoundAlertRef" Color="Color.Danger" Visible="@showNotFoundAlert" Dismisable="true">
+    No se encontró la ShopOrder o la fecha no coincide
+</Alert> *@
 
 <div class="container">
     <div class="input-group mb-3">
@@ -28,74 +30,99 @@
     <div class="row">
         <div class="col-sm-6">
             <div class="table-responsive bg-white">
-@*                 @if(showPlanner)
-                { *@
-                    <table class="table">
-                        <thead>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ShopOrder</th>
+                            <th>N.parte</th>
+                            <th>Cantidad</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in filteredPlanner)
+                        {
                             <tr>
-                                <th>ShopOrder</th>
-                                <th>N.parte</th>
-                                <th>Cantidad</th>
-                                <th>Fecha</th>
+                                <td>@item.ShopOrder</td>
+                                <td>@item.Codigo</td>
+                                <td>@item.Cantidad</td>
+                                <td>@item.Fecha.Value.ToShortDateString()</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in filteredPlanner)
-                            {
-                                <tr>
-                                    <td>@item.ShopOrder</td>
-                                    <td>@item.Codigo</td>
-                                    <td>@item.Cantidad</td>
-                                    <td>@item.Fecha.Value.ToShortDateString()</td>
-                                </tr>   
-                            }
-                        </tbody>
-                    </table>
-                @* } *@
+                            <tr>
+                                <td>@item.ShopOrder</td>
+                                <td>@item.Codigo2</td>
+                                <td>@item.Cantidad</td>
+                                <td>@item.Fecha.Value.ToShortDateString()</td>
+                            </tr>
+                            <tr>
+                                <td>@item.ShopOrder</td>
+                                <td>@item.Codigo3</td>
+                                <td>@item.Cantidad</td>
+                                <td>@item.Fecha.Value.ToShortDateString()</td>
+                            </tr>
+                            <tr>
+                                <td>@item.ShopOrder</td>
+                                <td>@item.Codigo4</td>
+                                <td>@item.Cantidad</td>
+                                <td>@item.Fecha.Value.ToShortDateString()</td>
+                            </tr>
+                            <tr>
+                                <td>@item.ShopOrder</td>
+                                <td>@item.Codigo5</td>
+                                <td>@item.Cantidad</td>
+                                <td>@item.Fecha.Value.ToShortDateString()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
 
         <div class="col-sm-6">
             <div class="table-responsive bg-white">
-@*                 @if(showPartNumer)
-                { *@
-                    <table class="table">
-                        <thead>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Número de Parte</th>
+                            <th>Cantidad Total</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in filteredPlanner)
+                        {
                             <tr>
-                                <th>N.parte</th>
-                                <th>Fecha</th>
+                                <td>@item.Codigo</td>
+                                <td>@GetTotalQuantity(item.Codigo)</td>
+                                <td>@item.Fecha.Value.ToShortDateString()</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in filteredSalidas)
-                            {
-                                <tr>
-                                    <td>@item.Codigo</td>
-                                    <td>@item.FechaRegistro.ToShortDateString()</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                @* } *@
+                            <tr>
+                                <td>@item.Codigo2</td>
+                                <td>@GetTotalQuantity(item.Codigo2)</td>
+                                <td>@item.Fecha.Value.ToShortDateString()</td>
+                            </tr>
+                            <tr>
+                                <td>@item.Codigo3</td>
+                                <td>@GetTotalQuantity(item.Codigo3)</td>
+                                <td>@item.Fecha.Value.ToShortDateString()</td>
+                            </tr>
+                            <tr>
+                                <td>@item.Codigo4</td>
+                                <td>@GetTotalQuantity(item.Codigo4)</td>
+                                <td>@item.Fecha.Value.ToShortDateString()</td>
+                            </tr>
+                            <tr>
+                                <td>@item.Codigo5</td>
+                                <td>@GetTotalQuantity(item.Codigo5)</td>
+                                <td>@item.Fecha.Value.ToShortDateString()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
-
-
-@* <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title text-danger" id="exampleModalLabel">ADVERTENCIA</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p class="text-danger">La fecha no coincide con el numero de parte o no existe la ShopOrder</p>
-            </div>
-        </div>
-    </div>
-</div> *@
 
 
 @code {
@@ -109,21 +136,22 @@
 
     bool showPlanner;
     bool showPartNumer;
+    bool showNotFoundAlert = false;
+    bool showNotMatchedDatesAlert = false;
+
+    Alert notFoundAlertRef;
+    Alert notMatchingDatesAlertRef;
 
     protected override void OnInitialized()
     {
-
         planners = services.GetPlans();
         salidas = services.GetSalidaList();
-
         filteredPlanner = new List<Planner>();
         filteredSalidas = new List<Salida>();
-
     }
 
     private void FindShopOrder()
     {
-
         var plannerResult = planners.Where(p => p.ShopOrder == shopOrder).ToList();
         if (plannerResult.Any())
         {
@@ -132,44 +160,59 @@
 
             if (salidResult.Any())
             {
-
                 filteredPlanner = plannerResult;
                 filteredSalidas = salidResult;
                 showPlanner = false;
                 showPartNumer = false;
-
             }
             else
             {
-                
-                // ShowModal();
                 FilterClean();
-
+                ShowNotFoundAlert();
+                NotShowMatchingDatesAlert();
             }
         }
         else
         {
-
-            // ShowModal();
             FilterClean();
-
+            ShowNotFoundAlert();
+            NotShowMatchingDatesAlert();
         }
 
         StateHasChanged();
     }
 
-    // private async Task ShowModal()
-    // {
-    //     await js.InvokeVoidAsync("$('#exampleModal').modal('show')");
-    // }
+    private int GetTotalQuantity(string codigo)
+    {
+        return filteredSalidas.Where(s => s.Codigo == codigo).Sum(s => s.Conteo);
+    }
 
     private void FilterClean()
     {
-   
         filteredPlanner = new List<Planner>();
         filteredSalidas = new List<Salida>();
         showPlanner = true;
         showPartNumer = true;
+    }
 
+    private void ShowNotFoundAlert()
+    {
+        showNotFoundAlert = true;
+        StateHasChanged();
+        HideAlertAfterDelay(notFoundAlertRef);
+    }
+
+    private void NotShowMatchingDatesAlert()
+    {
+        showNotMatchedDatesAlert = true;
+        StateHasChanged();
+        HideAlertAfterDelay(notMatchingDatesAlertRef);
+    }
+
+    private async Task HideAlertAfterDelay(Alert alertRef)
+    {
+        await Task.Delay(5000);
+        alertRef.Visible = false;
+        StateHasChanged();
     }
 }
