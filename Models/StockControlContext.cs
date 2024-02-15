@@ -19,6 +19,8 @@ public partial class StockControlContext : DbContext
 
     public virtual DbSet<Planner> Planners { get; set; }
 
+    public virtual DbSet<Registrohistorico> Registrohistoricos { get; set; }
+
     public virtual DbSet<Salida> Salidas { get; set; }
 
     public virtual DbSet<Shoporder> Shoporders { get; set; }
@@ -72,6 +74,16 @@ public partial class StockControlContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("Codigo_6");
             entity.Property(e => e.Fecha).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Registrohistorico>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__REGISTRO__3214EC07E4CD6FF2");
+
+            entity.ToTable("REGISTROHISTORICO");
+
+            entity.Property(e => e.Fecha).HasColumnType("datetime");
+            entity.Property(e => e.PartNumber).IsUnicode(false);
         });
 
         modelBuilder.Entity<Salida>(entity =>

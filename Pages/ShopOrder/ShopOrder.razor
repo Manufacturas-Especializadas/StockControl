@@ -37,7 +37,6 @@
                             <th>N.parte</th>
                             <th>Cantidad</th>
                             <th>Fecha</th>
-                            <th>Cantidad total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -92,7 +91,6 @@
                         <tr>
                             <th>Número de Parte</th>
                             <th>Cantidad</th>
-                            <th>Cantidad Total</th>
                             <th>Fecha</th>
                         </tr>
                     </thead>
@@ -124,6 +122,11 @@
                                 <td>@GetTotalQuantity(item.Codigo5)</td>
                                 <td>@item.Fecha.Value.ToShortDateString()</td>
                             </tr>
+                            <tr>
+                                <td>@item.Codigo6</td>
+                                <td>@GetTotalQuantity(item.Codigo6)</td>
+                                <td>@item.Fecha.Value.ToShortDateString()</td>
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -132,6 +135,16 @@
     </div>
 </div>
 
+<div class="container-fluid">
+    <div class="row justify-content-end fixed-bottom p-3">
+        <div class="col-auto">
+            <button class="btn btn-success p-2" @onclick="OrderFulfilled">Se cumplió la orden</button>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-danger p-2" @onclick="OrderNotFulfilled">No se cumplió la orden</button>
+        </div>
+    </div>
+</div>
 
 @code {
     int shopOrder;
@@ -156,6 +169,18 @@
         salidas = services.GetSalidaList();
         filteredPlanner = new List<Planner>();
         filteredSalidas = new List<Salida>();
+    }
+
+    private void OrderFulfilled()
+    {
+        SaveOrderHistory(true);
+        FilterClean();
+    }
+
+    private void OrderNotFulfilled()
+    {
+        SaveOrderHistory(false);
+        FilterClean();
     }
 
     private void FindShopOrder()
@@ -190,9 +215,88 @@
         StateHasChanged();
     }
 
+    private void SaveOrderHistory(bool orderFulfilled)
+    {
+        var shopOrderHistoryItems = new List<Registrohistorico>();
+        foreach (var plannerItem in filteredPlanner)
+        {
+            var totalQuantity = CalculateTotalQuantity(plannerItem);
+
+            var shoOrderHistoryItem = new Registrohistorico
+            {
+                ShopOrderId = plannerItem.ShopOrder,
+                PartNumber = plannerItem.Codigo,
+                TotalQunatity = totalQuantity,
+                Fecha = plannerItem.Fecha.Value.Date,
+                OrderFulfilled = orderFulfilled
+            };
+
+            var shoOrderHistoryItem2 = new Registrohistorico
+            {
+                ShopOrderId = plannerItem.ShopOrder,
+                PartNumber = plannerItem.Codigo2,
+                TotalQunatity = GetTotalQuantity(plannerItem.Codigo2),
+                Fecha = plannerItem.Fecha.Value.Date,
+                OrderFulfilled = orderFulfilled
+            };
+
+            var shoOrderHistoryItem3 = new Registrohistorico
+            {
+                ShopOrderId = plannerItem.ShopOrder,
+                PartNumber = plannerItem.Codigo3,
+                TotalQunatity = GetTotalQuantity(plannerItem.Codigo3),
+                Fecha = plannerItem.Fecha.Value.Date,
+                OrderFulfilled = orderFulfilled
+            };
+
+            var shoOrderHistoryItem4 = new Registrohistorico
+            {
+                ShopOrderId = plannerItem.ShopOrder,
+                PartNumber = plannerItem.Codigo4,
+                TotalQunatity = GetTotalQuantity(plannerItem.Codigo4),
+                Fecha = plannerItem.Fecha.Value.Date,
+                OrderFulfilled = orderFulfilled
+            };
+
+            var shoOrderHistoryItem5 = new Registrohistorico
+            {
+                ShopOrderId = plannerItem.ShopOrder,
+                PartNumber = plannerItem.Codigo5,
+                TotalQunatity = GetTotalQuantity(plannerItem.Codigo5),
+                Fecha = plannerItem.Fecha.Value.Date,
+                OrderFulfilled = orderFulfilled
+            };
+
+            var shoOrderHistoryItem6 = new Registrohistorico
+            {
+                ShopOrderId = plannerItem.ShopOrder,
+                PartNumber = plannerItem.Codigo6,
+                TotalQunatity = GetTotalQuantity(plannerItem.Codigo6),
+                Fecha = plannerItem.Fecha.Value.Date,
+                OrderFulfilled = orderFulfilled
+            };
+
+            shopOrderHistoryItems.Add(shoOrderHistoryItem2);
+            shopOrderHistoryItems.Add(shoOrderHistoryItem3);
+            shopOrderHistoryItems.Add(shoOrderHistoryItem4);
+            shopOrderHistoryItems.Add(shoOrderHistoryItem5);
+            shopOrderHistoryItems.Add(shoOrderHistoryItem);
+        }
+        services.Save(shopOrderHistoryItems);
+    }
+
     private int GetTotalQuantity(string codigo)
     {
         return filteredSalidas.Where(s => s.Codigo == codigo).Sum(s => s.Conteo);
+    }
+
+    private int CalculateTotalQuantity(Planner plannerItem)
+    {
+        return GetTotalQuantity(plannerItem.Codigo2) +
+               GetTotalQuantity(plannerItem.Codigo3) +
+               GetTotalQuantity(plannerItem.Codigo4) +
+               GetTotalQuantity(plannerItem.Codigo5) +
+               GetTotalQuantity(plannerItem.Codigo6);
     }
 
     private void FilterClean()

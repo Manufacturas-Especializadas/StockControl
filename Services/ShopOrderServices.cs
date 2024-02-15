@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StockControl.Models;
 using StockControl.Data;
+using System.Diagnostics;
 
 namespace StockControl.Services
 {
@@ -33,6 +34,22 @@ namespace StockControl.Services
         {
             var result = _context.Salidas.Where(p => p.FechaRegistro.Date == date).ToList();
             return result;
+        }
+
+        public void Save(List<Registrohistorico> registrohistoricos)
+        {
+            try
+            {
+                foreach(var item in  registrohistoricos)
+                {
+                    _context.Registrohistoricos.Add(item);
+                }
+                _context.SaveChanges();
+            }
+            catch(Exception ex) 
+            {
+                Debug.WriteLine($"Error al guardar{ex}");
+            }
         }
     }
 }

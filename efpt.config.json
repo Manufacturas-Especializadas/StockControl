@@ -28,6 +28,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[REGISTROHISTORICO]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[SALIDAS]",
          "ObjectType": 0
       },
