@@ -13,101 +13,36 @@
 
 <h1 class="text-black-bold text-center">PLANNER</h1>
 
-<Alert @ref="alertRef" Color="Color.Success" Visible="@showAlert" Dismisable="true">
-    Registro nuevo completado
-</Alert>
-
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <EditForm Model="planner" class="row g-3 needs-validation" OnValidSubmit="(() => Create())">
-                        <div class="col-12">
-                            <label class="form-label">ShopOrder</label>
-                            <InputNumber class="form-control" @bind-Value="planner.ShopOrder" required />
-                        </div>
-                        <div class="col-4">
-                            <label class="form-label">N.Parte</label>
-                            <InputText class="form-control" @bind-Value="planner.Codigo" required />
-                        </div>
-                        <div class="col-2">
-                            <label class="form-label">Cantidad</label>
-                            <InputNumber class="form-control" @bind-Value="planner.Cantidad2"/>
-                        </div>
-                        <div class="col-4">
-                            <label class="form-label">N.Parte</label>
-                            <InputText class="form-control" @bind-Value="planner.Codigo2" />
-                        </div>
-                        <div class="col-2">
-                            <label class="form-label">Cantidad</label>
-                            <InputNumber class="form-control" @bind-Value="planner.Cantidad3"/>
-                        </div>
-                        <div class="col-4">
-                            <label class="form-label">N.Parte</label>
-                            <InputText class="form-control" @bind-Value="planner.Codigo3" />
-                        </div>
-                        <div class="col-2">
-                            <label class="form-label">Cantidad</label>
-                            <InputNumber class="form-control" @bind-Value="planner.Cantidad4"/>
-                        </div>
-                        <div class="col-4">
-                            <label class="form-label">N.Parte</label>
-                            <InputText class="form-control" @bind-Value="planner.Codigo4" />
-                        </div>
-                        <div class="col-2">
-                            <label class="form-label">Cantidad</label>
-                            <InputNumber class="form-control" @bind-Value="planner.Cantidad5"/>
-                        </div>
-                        <div class="col-4">
-                            <label class="form-label">N.Parte</label>
-                            <InputText class="form-control" @bind-Value="planner.Codigo5" />
-                        </div>
-                        <div class="col-2">
-                            <label class="form-label">Cantidad</label>
-                            <InputNumber class="form-control" @bind-Value="planner.Cantidad6"/>
-                        </div>
-                        <div class="col-4">
-                            <label class="form-label">N.Parte</label>
-                            <InputText class="form-control" @bind-Value="planner.Codigo6"/>
-                        </div>
-                        <div class="col-2">
-                            <label class="form-label">Cantidad</label>
-                            <InputNumber class="form-control" @bind-Value="planner.Cantidad7"/>
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">Cantidad Total</label>
-                            <InputText class="form-control" @bind-Value=planner.Cantidad required />
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">Fecha</label>
-                            <InputDate class="form-control" @bind-Value="planner.Fecha" required />
-                        </div>
-                        <button class="btn btn-primary" type="submit">Enviar</button>
-                    </EditForm>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<button class="btn btn-success m-2" @onclick="@(() => nav.NavigateTo("/planner/create"))">Registrar ShopOrder</button>
+<RadzenDataGrid TItem="Models.Planner" Data="planners" AllowPaging="true" PageSize="10">
+    <Columns>
+        <RadzenDataGridColumn TItem="Models.Planner" Property="ShopOrder" Title="ShopOrder" TextAlign="TextAlign.Center"/>
+        <RadzenDataGridColumn TItem="Models.Planner" Property="Cantidad" Title="Cantidad Total" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn TItem="Models.Planner" Property="Fecha" Title="Fecha" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn TItem="Models.Planner" Property="Id" Title="Opciones" TextAlign="TextAlign.Center">
+            <Template>
+                <button class="btn btn-primary" @onclick="@(() => nav.NavigateTo($"/planneredit/{context.Id}"))">Editar</button>
+                <button class="btn btn-danger" @onclick="@(() => Delete(context.Id))">Borrar</button>
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
 
 @code {
     StockControl.Models.Planner planner = new StockControl.Models.Planner();
 
-    bool showAlert = false;
-    Alert alertRef;
+    List<Models.Planner> planners = new List<Models.Planner>();
+    Models.Planner plannersEdit = new Models.Planner();
 
-    private async Task Create()
+    protected override async Task OnInitializedAsync()
     {
-        var create = await services.CREATE(planner);
+        planners = await services.GetPlanners();
+    }
 
-        showAlert = true;
-        StateHasChanged();
+    private async Task Delete(int id)
+    {
+        await services.DELETE(id);
 
-        await Task.Delay(5000);
-
-
-        nav.NavigateTo("/planner", true);
-
+        planners = await services.GetPlanners();
     }
 }
