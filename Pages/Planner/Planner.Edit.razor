@@ -1,0 +1,101 @@
+﻿@page "/planneredit/{id:int}"
+
+@using StockControl.Services;
+@using StockControl.Models;
+
+@inject PlannerServices services;
+@inject NavigationManager nav;
+
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <EditForm Model="planner" class="row g-3 needs-validation" OnValidSubmit="(() => UpdatePlanner())">
+                        <div class="col-12">
+                            <label class="form-label">ShopOrder</label>
+                            <InputNumber class="form-control" @bind-Value="planner.ShopOrder" required />
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">N.Parte</label>
+                            <InputText class="form-control" @bind-Value="planner.Codigo" required />
+                        </div>
+                        <div class="col-2">
+                            <label class="form-label">Cantidad</label>
+                            <InputNumber class="form-control" @bind-Value="planner.Cantidad2"/>
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">N.Parte</label>
+                            <InputText class="form-control" @bind-Value="planner.Codigo2" />
+                        </div>
+                        <div class="col-2">
+                            <label class="form-label">Cantidad</label>
+                            <InputNumber class="form-control" @bind-Value="planner.Cantidad3"/>
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">N.Parte</label>
+                            <InputText class="form-control" @bind-Value="planner.Codigo3" />
+                        </div>
+                        <div class="col-2">
+                            <label class="form-label">Cantidad</label>
+                            <InputNumber class="form-control" @bind-Value="planner.Cantidad4"/>
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">N.Parte</label>
+                            <InputText class="form-control" @bind-Value="planner.Codigo4" />
+                        </div>
+                        <div class="col-2">
+                            <label class="form-label">Cantidad</label>
+                            <InputNumber class="form-control" @bind-Value="planner.Cantidad5"/>
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">N.Parte</label>
+                            <InputText class="form-control" @bind-Value="planner.Codigo5" />
+                        </div>
+                        <div class="col-2">
+                            <label class="form-label">Cantidad</label>
+                            <InputNumber class="form-control" @bind-Value="planner.Cantidad6"/>
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label">N.Parte</label>
+                            <InputText class="form-control" @bind-Value="planner.Codigo6"/>
+                        </div>
+                        <div class="col-2">
+                            <label class="form-label">Cantidad</label>
+                            <InputNumber class="form-control" @bind-Value="planner.Cantidad7"/>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Cantidad Total</label>
+                            <InputText class="form-control" @bind-Value=planner.Cantidad required />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Fecha</label>
+                            <InputDate class="form-control" @bind-Value="planner.Fecha" required />
+                        </div>
+                        <button class="btn btn-primary" type="submit">Enviar</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    Models.Planner planner = new Models.Planner();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        planner = await services.GetPlannerAsync(id);
+    }
+
+    private async Task UpdatePlanner()
+    {
+        var plannerEdit = await services.UPDATE(id, planner);
+        nav.NavigateTo("/planner");
+    }
+}
