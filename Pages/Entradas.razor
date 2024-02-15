@@ -23,102 +23,123 @@
 
 <h1 class="text-black-bold text-center">ENTRADAS</h1>
 <h3 class="text-info">Cargar archivo</h3>
+
+<Alert @ref="alertRef" Color="Color.Success" Visible="@showAlert" Dismisable="true">
+    Archivo cargado correctamente
+</Alert>
+
 <InputFile OnChange="@ImportCsvFile" class="btn btn-primary mb-2 mt-3 rounded-2" />
 
 <RadzenDataGrid TItem="Entrada" Data="@entradas" AllowPaging="true" PageSize="10">
     <Columns>
         <RadzenDataGridColumn TItem="Entrada" Property="Codigo"   Title="N.PARTE" TextAlign="TextAlign.Center"/>
+        <RadzenDataGridColumn TItem="Entrada" Property="FechaRegistro" Title="FECHA" TextAlign="TextAlign.Center" />
     </Columns>
 </RadzenDataGrid>
-
 
 @code {
     //Funcion para administrar excel
     DataTable dt = new DataTable();
     List<Entrada> entradas = new List<Entrada>();
 
+    bool showAlert = false;
+    Alert alertRef;
+
     protected override async Task OnInitializedAsync()
     {
         entradas = await services.GetEntradas();
     }
 
-
     private async Task ImportCsvFile(InputFileChangeEventArgs e)
     {
-        // Obtener el flujo de archivo desde el evento
-        var fileStream = e.File.OpenReadStream();
-
-        // Crear un nuevo MemoryStream y copiar el contenido del flujo de archivo
-        var ms = new MemoryStream();
-        await fileStream.CopyToAsync(ms);
-        fileStream.Close();
-        ms.Position = 0;
-
-        // Utilizar un lector de StreamReader y un lector de CSV para procesar el archivo CSV
-        using (var reader = new StreamReader(ms))
-        using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)))
+        try
         {
-            // Leer la primera línea del archivo CSV (encabezados)
-            csv.Read();
-            csv.ReadHeader();
+            // Obtener el flujo de archivo desde el evento
+            var fileStream = e.File.OpenReadStream();
 
-            // Iterar sobre los encabezados y agregarlos como columnas al DataTable
-            foreach (var header in csv.HeaderRecord)
+            // Crear un nuevo MemoryStream y copiar el contenido del flujo de archivo
+            var ms = new MemoryStream();
+            await fileStream.CopyToAsync(ms);
+            fileStream.Close();
+            ms.Position = 0;
+
+            // Utilizar un lector de StreamReader y un lector de CSV para procesar el archivo CSV
+            using (var reader = new StreamReader(ms))
+            using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)))
             {
-                dt.Columns.Add(header);
-            }
+                // Leer la primera línea del archivo CSV (encabezados)
+                csv.Read();
+                csv.ReadHeader();
 
-            // Diccionario para almacenar el conteo de cada código
-            Dictionary<string, int> codigoConteo = new Dictionary<string, int>();
-
-            // Iterar sobre las filas del archivo CSV
-            while (await csv.ReadAsync())
-            {
-                // Crear una nueva fila en el DataTable y asignar los valores de la fila actual
-                var row = dt.NewRow();
-                for (int i = 0; i < csv.HeaderRecord.Length; i++)
+                // Iterar sobre los encabezados y agregarlos como columnas al DataTable
+                foreach (var header in csv.HeaderRecord)
                 {
-                    row[i] = csv.GetField(i);
+                    dt.Columns.Add(header);
                 }
-                dt.Rows.Add(row);
 
-                // Obtener el código de la primera columna de la fila
-                var code = row.IsNull(0) ? null : row[0].ToString();
-                if (!string.IsNullOrEmpty(code))
+                // Diccionario para almacenar el conteo de cada código
+                Dictionary<string, int> codigoConteo = new Dictionary<string, int>();
+
+                // Iterar sobre las filas del archivo CSV
+                while (await csv.ReadAsync())
                 {
-                    // Actualizar el conteo en el diccionario
-                    if (codigoConteo.ContainsKey(code))
+                    // Crear una nueva fila en el DataTable y asignar los valores de la fila actual
+                    var row = dt.NewRow();
+                    for (int i = 0; i < csv.HeaderRecord.Length; i++)
                     {
-                        codigoConteo[code]++;
+                        row[i] = csv.GetField(i);
                     }
-                    else
-                    {
-                        codigoConteo[code] = 1;
-                    }
+                    dt.Rows.Add(row);
 
-                    // Agregar una nueva entrada con el código actual
-                    entradas.Add(new Entrada { Codigo = code });
+                    // Obtener el código de la primera columna de la fila
+                    var code = row.IsNull(0) ? null : row[0].ToString();
+                    if (!string.IsNullOrEmpty(code))
+                    {
+                        // Actualizar el conteo en el diccionario
+                        if (codigoConteo.ContainsKey(code))
+                        {
+                            codigoConteo[code]++;
+                        }
+                        else
+                        {
+                            codigoConteo[code] = 1;
+                        }
+
+                        // Agregar una nueva entrada con el código actual
+                        entradas.Add(new Entrada { Codigo = code });
+                    }
+                }
+
+                // Obtener la lista de códigos no vacíos del DataTable
+                List<string> codigos = dt.Rows.Cast<DataRow>()
+                    .Select(r => r.IsNull(0) ? null : r[0].ToString())
+                    .Where(codigo => !string.IsNullOrEmpty(codigo))
+                    .ToList();
+
+                // Llamar al servicio para insertar los códigos en la base de datos
+                await services.InsertDataBase(codigos);
+
+                // Construir la ruta completa del archivo y eliminarlo si existe
+                var filePath = Path.Combine(@"C:\Users\Innovacion\Documents\SRG100_data", e.File.Name);
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
                 }
             }
 
-            // Obtener la lista de códigos no vacíos del DataTable
-            List<string> codigos = dt.Rows.Cast<DataRow>()
-                .Select(r => r.IsNull(0) ? null : r[0].ToString())
-                .Where(codigo => !string.IsNullOrEmpty(codigo))
-                .ToList();
+            // Actualizar la lista de entradas después de la inserción en la base de datos
+            entradas = await services.GetEntradas();
 
-            // Llamar al servicio para insertar los códigos en la base de datos
-            await services.InsertDataBase(codigos);
+            showAlert = true;
+            StateHasChanged();
 
-            // Construir la ruta completa del archivo y eliminarlo si existe
-            var filePath = Path.Combine(@"C:\Users\Innovacion\Documents\SRG100_data", e.File.Name);
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
+            await Task.Delay(5000);
+        }
+        catch(Exception ex)
+        {
+            Debug.WriteLine($"Error al insertar el archivo: {ex}");
         }
 
-        // Actualizar la lista de entradas después de la inserción en la base de datos
-        entradas = await services.GetEntradas();
     }
+
 }

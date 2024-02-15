@@ -19,7 +19,6 @@ namespace StockControl.Services
     {
         private readonly StockControlContext _context;
 
-
         public EntradasSalidasServices(StockControlContext context)
         {
             _context = context;
@@ -43,61 +42,83 @@ namespace StockControl.Services
             return _context.Salidas.ToList();
         }
 
-        public async Task<List<ResultadoEntradasSalidas>> GetEntradasSalidas()
+        public async Task<List<Historialinventario>> GetEntradasSalidas()
         {
-            // Obtener todas las entradas y salidas de la base de datos
-            using (var context = new StockControlContext())
+            try
             {
-                var entradas = await context.Entradas.ToListAsync();
-                var salidas = await context.Salidas.ToListAsync();
+                // Obtener todas las entradas y salidas de la base de datos
+                var entradas = await _context.Entradas.ToListAsync();
+                var salidas = await _context.Salidas.ToListAsync();
+
+                // Crear un diccionario para almacenar las salidas agrupadas por código y fecha
+                var salidasAgrupadas = salidas
+                    .GroupBy(s => new { s.Codigo, FechaRegistro = s.FechaRegistro.Date })
+                    .ToDictionary(
+                        s => new KeyValuePair<string, DateTime>(s.Key.Codigo, s.Key.FechaRegistro),
+                        s => s.Sum(x => x.Conteo)
+                    );
+
+                // Crear una lista para almacenar el historial de inventario
+                var historialInventario = new List<Historialinventario>();
 
                 // Agrupar las entradas por código y fecha, sumando la cantidad (conteo)
-                var entradasAgrupadas = entradas.GroupBy(e => new { e.Codigo, FechaRegistro = e.FechaRegistro.Date })
-                                                .Select(e => new ResultadoEntradasSalidas
-                                                {
-                                                    Codigo = e.Key.Codigo,
-                                                    CantidadEntrada = e.Sum(x => x.Conteo),
-                                                    CantidadSalida = 0,
-                                                    CantidadFinal = 0,
-                                                    FechaEntrada = e.Key.FechaRegistro.Date
-                                                })
-                                                .OrderBy(e => e.FechaEntrada)
-                                                .ToList();
-
-                // Agrupar las salidas por código y fecha, sumando la cantidad (conteo)
-                // Agrupar las salidas por código y fecha, sumando la cantidad (conteo)
-                var salidasAgrupadas = salidas.GroupBy(s => new { s.Codigo, FechaRegistro = s.FechaRegistro.Date })
-                    .Select(s => new
+                var entradasAgrupadas = entradas
+                    .GroupBy(e => new { e.Codigo, FechaRegistro = e.FechaRegistro.Date })
+                    .Select(e => new Historialinventario
                     {
-                        Key = new KeyValuePair<string, DateTime>(s.Key.Codigo, s.Key.FechaRegistro.Date),
-                        Sum = s.Sum(x => x.Conteo)
+                        Codigo = e.Key.Codigo,
+                        CantidadEntrada = e.Sum(x => x.Conteo),
+                        FechaEntrada = e.Key.FechaRegistro
                     })
-                    .ToDictionary(s => s.Key, s => s.Sum);
+                    .OrderBy(e => e.FechaEntrada)
+                    .ToList();
 
                 // Iterar sobre las entradas agrupadas para calcular la cantidad de salidas y final
                 foreach (var entrada in entradasAgrupadas)
                 {
-                    var codigoFecha = new CodigoFecha { Codigo = entrada.Codigo, FechaRegistro = entrada.FechaEntrada };
                     // Intentar obtener la cantidad de salidas correspondiente a la entrada actual
-                    if (salidasAgrupadas.TryGetValue(new KeyValuePair<string, DateTime>(codigoFecha.Codigo, codigoFecha.FechaRegistro),
+                    if (salidasAgrupadas.TryGetValue(new KeyValuePair<string, DateTime>(entrada.Codigo, entrada.FechaEntrada),
                         out var cantidadSalida))
                     {
                         // Asignar la cantidad de salidas y calcular la cantidad final
                         entrada.CantidadSalida = cantidadSalida;
                         entrada.CantidadFinal = entrada.CantidadEntrada - cantidadSalida;
-                        entrada.FechaSalida = cantidadSalida > 0 ? (DateTime?)codigoFecha.FechaRegistro : null;
+
+                        // Obtener la fecha de salida
+                        var fechaSalida = salidas
+                            .Where(s => s.Codigo == entrada.Codigo && s.FechaRegistro.Date == entrada.FechaEntrada.Date)
+                            .Select(s => s.FechaRegistro)
+                            .FirstOrDefault();
+
+                        // Asignar la fecha de salida si existe
+                        entrada.FechaSalida = fechaSalida;
                     }
                     else
                     {
-                        // No hay salidas para esta entrada, establecer FechaSalida como null
+                        // No hay salidas para esta entrada, establecer cantidad de salida y final como cero
+                        entrada.CantidadSalida = 0;
+                        entrada.CantidadFinal = entrada.CantidadEntrada;
                         entrada.FechaSalida = null;
                     }
+
+                    // Guardar el historial de inventario en la lista
+                    historialInventario.Add(entrada);
                 }
 
-                // Retornar las entradas agrupadas y calculadas
-                return entradasAgrupadas;
-            }
+                // Guardar el historial de inventario en la base de datos
+                await _context.Historialinventarios.AddRangeAsync(historialInventario);
+                await _context.SaveChangesAsync();
 
+                // Retornar el historial de inventario
+                return historialInventario;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error al recuperar los datos{ex.Message}");
+
+                return new List<Historialinventario>();
+            }
+            
         }
 
     }
