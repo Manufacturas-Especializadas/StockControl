@@ -12,8 +12,23 @@
         <RadzenDataGridColumn TItem="Registrohistorico" Property="ShopOrderId" Title="ShopOrder" TextAlign="TextAlign.Center"/>
         <RadzenDataGridColumn TItem="Registrohistorico" Property="PartNumber" Title="N.Parte" TextAlign="TextAlign.Center"/>
         <RadzenDataGridColumn TItem="Registrohistorico" Property="TotalQunatity" Title="Cantidad Total" TextAlign="TextAlign.Center"/>
-        <RadzenDataGridColumn TItem="Registrohistorico" Property="Fecha" Title="Fecha" TextAlign="TextAlign.Center"/>
-        <RadzenDataGridColumn TItem="Registrohistorico" Property="OrderFulfilled" Title="Aprobado" TextAlign="TextAlign.Center"/>
+        <RadzenDataGridColumn TItem="Registrohistorico" Property="Fecha" Title="Fecha" TextAlign="TextAlign.Center">
+            <Template>
+                <span>@context.Fecha.Value.ToShortDateString()</span>
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Registrohistorico" Property="OrderFulfilled" Title="Aprobado" TextAlign="TextAlign.Center">
+            <Template Context="registro">
+                @if (registro.OrderFulfilled)
+                {
+                    <span>Sí</span>
+                }
+                else
+                {
+                    <span>No</span>
+                }
+            </Template>
+        </RadzenDataGridColumn>
     </Columns>
 </RadzenDataGrid>
 
