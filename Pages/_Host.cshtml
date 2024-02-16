@@ -37,6 +37,25 @@
             }
         }
 
+
+        window.showDeleteModal = function (id) {
+            // Asignar el id al botón de confirmación del modal
+            $('#confirmDeleteButton').attr('data-id', id);
+            // Mostrar el modal
+            $('#confirmDeleteModal').modal('show');
+        };
+
+        // Evento de click en el botón de confirmación del modal
+        $('#confirmDeleteButton').click(function () {
+            // Obtener el id del registro a eliminar
+            var id = $(this).attr('data-id');
+            // Llamar a la función Delete de C# pasando el id
+            DotNet.invokeMethodAsync('BlazorApp', 'Delete', id);
+            // Ocultar el modal
+            $('#confirmDeleteModal').modal('hide');
+        });
+
+
     </script>
 </head>
 <body>
@@ -52,7 +71,7 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

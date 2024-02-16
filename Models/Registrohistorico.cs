@@ -15,7 +15,7 @@ public partial class Registrohistorico
 
     public DateTime? Fecha { get; set; }
 
-    public bool? OrderFulfilled { get; set; }
+    public bool OrderFulfilled { get; set; }
 
     public int? ShopOrderId { get; set; }
 }

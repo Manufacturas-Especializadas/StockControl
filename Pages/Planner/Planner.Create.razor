@@ -7,10 +7,11 @@
 @inject NavigationManager nav;
 
 
+<PageTitle> Registro  </PageTitle>
 
-@* <Alert @ref="alertRef" Color="Color.Success" Visible="@showAlert" Dismisable="true">
-    Registro nuevo completado
-</Alert> *@
+<Alert @ref="alertRef" Color="Color.Success" Visible="@showAlert" Dismisable="true">
+    registro nuevo completado
+</Alert>
 
 <div class="container mt-4">
     <div class="row justify-content-center">
@@ -86,16 +87,21 @@
     </div>
 </div>
 
-
 @code {
     Models.Planner planner = new Models.Planner();
 
+    Alert alertRef;
+    bool showAlert = false;
+
     private async Task Create()
     {
+        await Task.Delay(5000);
+        showAlert = true;
+        StateHasChanged();
+
         var create = await services.CREATE(planner);
 
         nav.NavigateTo("/planner", true);
 
     }
-
 }

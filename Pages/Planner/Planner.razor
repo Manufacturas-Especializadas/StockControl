@@ -5,6 +5,7 @@
 
 @inject PlannerServices services;
 @inject NavigationManager nav;
+@inject Microsoft.JSInterop.IJSRuntime JSRuntime;
 
 <PageTitle>Planner</PageTitle>
 
@@ -13,26 +14,57 @@
 
 <h1 class="text-black-bold text-center">PLANNER</h1>
 
-<button class="btn btn-success m-2" @onclick="@(() => nav.NavigateTo("/planner/create"))">Registrar ShopOrder</button>
+<a href="/" class="link-primary text-decoration-none fw-bold"><i class="bi bi-arrow-left p-2"></i>Volver atrás</a>
+
+<div class="d-flex justify-content-end align-items-center">
+    <button class="btn btn-success m-2" @onclick="@(() => nav.NavigateTo("/planner/create"))">Registrar ShopOrder</button>
+</div>
+
 <RadzenDataGrid TItem="Models.Planner" Data="planners" AllowPaging="true" PageSize="10">
     <Columns>
         <RadzenDataGridColumn TItem="Models.Planner" Property="ShopOrder" Title="ShopOrder" TextAlign="TextAlign.Center"/>
         <RadzenDataGridColumn TItem="Models.Planner" Property="Cantidad" Title="Cantidad Total" TextAlign="TextAlign.Center" />
-        <RadzenDataGridColumn TItem="Models.Planner" Property="Fecha" Title="Fecha" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn TItem="Models.Planner" Property="Fecha" Title="Fecha" TextAlign="TextAlign.Center">
+            <Template>
+                <span>@context.Fecha.Value.ToShortDateString()</span>
+            </Template>
+        </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="Models.Planner" Property="Id" Title="Opciones" TextAlign="TextAlign.Center">
             <Template>
                 <button class="btn btn-primary" @onclick="@(() => nav.NavigateTo($"/planneredit/{context.Id}"))">Editar</button>
-                <button class="btn btn-danger" @onclick="@(() => Delete(context.Id))">Borrar</button>
+                <button class="btn btn-danger" @onclick="@(() => ShowDeleteConfirmation(context.Id))">Borrar</button>
             </Template>
         </RadzenDataGridColumn>
     </Columns>
 </RadzenDataGrid>
+
+<div class="modal" id="confirmDeleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmar eliminación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar este registro?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton" @onclick="(() => Delete(planner.Id))">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
     StockControl.Models.Planner planner = new StockControl.Models.Planner();
 
     List<Models.Planner> planners = new List<Models.Planner>();
     Models.Planner plannersEdit = new Models.Planner();
+
+    int idToDelete;
 
     protected override async Task OnInitializedAsync()
     {
@@ -41,8 +73,30 @@
 
     private async Task Delete(int id)
     {
-        await services.DELETE(id);
+        if (id != 0)
+        {
+            var plannerToDelete = planners.FirstOrDefault(p => p.Id == id);
+            try
+            {
+                if (plannerToDelete != null)
+                {
+                    // Elimina la entidad
+                    await services.DELETE(plannerToDelete.Id);
 
-        planners = await services.GetPlanners();
+                    // Elimina el registro de la lista local
+                    planners.Remove(plannerToDelete);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al borrar" + ex);
+            }
+        }
+    }
+
+    private void ShowDeleteConfirmation(int id)
+    {
+        // Mostrar el modal de confirmación
+        JSRuntime.InvokeVoidAsync("showDeleteModal", id);
     }
 }

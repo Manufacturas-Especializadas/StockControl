@@ -1,7 +1,46 @@
 ﻿@page "/historial"
 
-<h3>Historial</h3>
+@using StockControl.Models;
+@using StockControl.Services;
+
+@inject HistorialServices services;
+
+<PageTitle>Historial</PageTitle>
+
+<a href="/" class="link-primary text-decoration-none pb-3 fw-bold"><i class="bi bi-arrow-left p-2"></i>Volver atrás</a>
+
+
+<RadzenDataGrid TItem="Registrohistorico" Data="historial" AllowPaging="true" PageSize="10" FilterMode="FilterMode.Advanced" AllowFiltering="true">
+    <Columns>
+        <RadzenDataGridColumn TItem="Registrohistorico" Property="ShopOrderId" Title="ShopOrder" TextAlign="TextAlign.Center"/>
+        <RadzenDataGridColumn TItem="Registrohistorico" Property="PartNumber" Title="N.Parte" TextAlign="TextAlign.Center"/>
+        <RadzenDataGridColumn TItem="Registrohistorico" Property="TotalQunatity" Title="Cantidad Total" TextAlign="TextAlign.Center"/>
+        <RadzenDataGridColumn TItem="Registrohistorico" Property="Fecha" Title="Fecha" TextAlign="TextAlign.Center">
+            <Template>
+                <span>@context.Fecha.Value.ToShortDateString()</span>
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="Registrohistorico" Property="OrderFulfilled" Title="Aprobado" TextAlign="TextAlign.Center">
+            <Template Context="registro">
+                @if (registro.OrderFulfilled)
+                {
+                    <span>Sí</span>
+                }
+                else
+                {
+                    <span>No</span>
+                }
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
 
 @code {
+    List<Registrohistorico> historial = new List<Registrohistorico>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        historial = await services.GetRegistrohistoricos();
+    }
 
 }
