@@ -5,7 +5,10 @@
 
 @inject HistorialServices services;
 
-<PageTitle>Historial Planner</PageTitle>
+<PageTitle>Historial</PageTitle>
+
+<a href="/" class="link-primary text-decoration-none pb-3 fw-bold"><i class="bi bi-arrow-left p-2"></i>Volver atrás</a>
+
 
 <RadzenDataGrid TItem="Registrohistorico" Data="historial" AllowPaging="true" PageSize="10" FilterMode="FilterMode.Advanced" AllowFiltering="true">
     <Columns>
