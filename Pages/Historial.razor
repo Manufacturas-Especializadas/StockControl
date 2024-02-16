@@ -22,14 +22,7 @@
         </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="Registrohistorico" Property="OrderFulfilled" Title="Aprobado" TextAlign="TextAlign.Center">
             <Template Context="registro">
-                @if (registro.OrderFulfilled)
-                {
-                    <span>Sí</span>
-                }
-                else
-                {
-                    <span>No</span>
-                }
+                <span class="circle @(registro.OrderFulfilled ? "green blink" : "red blink")"></span>
             </Template>
         </RadzenDataGridColumn>
     </Columns>
