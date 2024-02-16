@@ -18,7 +18,11 @@
     <Columns>
         <RadzenDataGridColumn TItem="Models.Planner" Property="ShopOrder" Title="ShopOrder" TextAlign="TextAlign.Center"/>
         <RadzenDataGridColumn TItem="Models.Planner" Property="Cantidad" Title="Cantidad Total" TextAlign="TextAlign.Center" />
-        <RadzenDataGridColumn TItem="Models.Planner" Property="Fecha" Title="Fecha" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn TItem="Models.Planner" Property="Fecha" Title="Fecha" TextAlign="TextAlign.Center">
+            <Template>
+                <span>@context.Fecha.Value.ToShortDateString()</span>
+            </Template>
+        </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="Models.Planner" Property="Id" Title="Opciones" TextAlign="TextAlign.Center">
             <Template>
                 <button class="btn btn-primary" @onclick="@(() => nav.NavigateTo($"/planneredit/{context.Id}"))">Editar</button>
