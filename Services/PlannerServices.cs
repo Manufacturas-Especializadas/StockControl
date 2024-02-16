@@ -62,12 +62,18 @@ namespace StockControl.Services
             return plannerDB;
         }
 
-
         public async Task DELETE(int id)
         {
             var plannerDB = await _context.Planners.FindAsync(id);
-            _context.Remove(plannerDB);
-            await _context.SaveChangesAsync();
+            if (plannerDB != null)
+            {
+                _context.Remove(plannerDB);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new ArgumentException($"No se encontró ninguna entidad Planner con el ID {id}.");
+            }
         }
     }
 }
