@@ -24,6 +24,14 @@ namespace StockControl.Services
             return planner;
         }
 
+        public async Task<Planner> GetPlannerByID(int id)
+        {
+            var planner = await _context.Planners.FirstOrDefaultAsync(p => p.Id == id);
+
+            return planner;
+        }
+
+
         public async Task<Planner> CREATE(Planner planner)
         {
             if(planner != null)
