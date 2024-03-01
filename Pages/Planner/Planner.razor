@@ -32,71 +32,82 @@
         <RadzenDataGridColumn TItem="Models.Planner" Property="Id" Title="Opciones" TextAlign="TextAlign.Center">
             <Template>
                 <button class="btn btn-primary" @onclick="@(() => nav.NavigateTo($"/planneredit/{context.Id}"))">Editar</button>
-                <button class="btn btn-danger" @onclick="@(() => ShowDeleteConfirmation(context.Id))">Borrar</button>
+                <button class="btn btn-danger" @onclick="@(() => ShowPlannerDetails(context))">Detalles</button>
             </Template>
         </RadzenDataGridColumn>
     </Columns>
 </RadzenDataGrid>
 
-<div class="modal" id="confirmDeleteModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirmar eliminación</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ¿Estás seguro de que deseas eliminar este registro?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteButton" @onclick="(() => Delete(planner.Id))">Eliminar</button>
-            </div>
-        </div>
-    </div>
-</div>
+<Modal @ref="modalRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Detalles del Planner</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            @if (selectedPlanner != null)
+            {
+                <p><strong>ShopOrder:</strong> @selectedPlanner.ShopOrder</p>
+                <p><strong>N.Parte:</strong> @selectedPlanner.Codigo</p>
+                <p><strong>Cantidad:</strong> @selectedPlanner.Cantidad2</p>
+                <p><strong>N.Parte:</strong> @selectedPlanner.Codigo2</p>
+                <p><strong>Cantidad:</strong> @selectedPlanner.Cantidad3</p>
+                <p><strong>N.Parte:</strong> @selectedPlanner.Codigo3</p>
+                <p><strong>Cantidad:</strong> @selectedPlanner.Cantidad4</p>
+                <p><strong>N.Parte:</strong> @selectedPlanner.Codigo4</p>
+                <p><strong>Cantidad:</strong> @selectedPlanner.Cantidad5</p>
+                <p><strong>N.Parte:</strong> @selectedPlanner.Codigo5</p>
+                <p><strong>Cantidad:</strong> @selectedPlanner.Cantidad6</p>
+                <p><strong>N.Parte:</strong> @selectedPlanner.Codigo6</p>
+                <p><strong>Cantidad:</strong> @selectedPlanner.Cantidad7</p>
+                <p><strong>Cantidad Total:</strong> @selectedPlanner.Cantidad</p>
+                <p><strong>Fecha:</strong> @selectedPlanner.Fecha.Value.ToShortDateString()</p>
+            }
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@CloseModal">Cerrar</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
 
 @code {
-    StockControl.Models.Planner planner = new StockControl.Models.Planner();
+    StockControl.Models.Planner selectedPlanner = null;
 
     List<Models.Planner> planners = new List<Models.Planner>();
     Models.Planner plannersEdit = new Models.Planner();
 
     int idToDelete;
+    Modal modalRef;
+
+    [Parameter]
+    public int id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+
         planners = await services.GetPlanners();
+
     }
 
-    private async Task Delete(int id)
-    {
-        if (id != 0)
-        {
-            var plannerToDelete = planners.FirstOrDefault(p => p.Id == id);
-            try
-            {
-                if (plannerToDelete != null)
-                {
-                    // Elimina la entidad
-                    await services.DELETE(plannerToDelete.Id);
+    // private void ShowPlannerDetails(int id)
+    // {
+    //     nav.NavigateTo($"/planner/details/{id}");
+    // }
 
-                    // Elimina el registro de la lista local
-                    planners.Remove(plannerToDelete);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error al borrar" + ex);
-            }
-        }
+    private void ShowPlannerDetails(Models.Planner planner)
+    {
+        selectedPlanner = planner;
+        modalRef.Show();
     }
 
-    private void ShowDeleteConfirmation(int id)
+    private Task CloseModal()
     {
-        // Mostrar el modal de confirmación
-        JSRuntime.InvokeVoidAsync("showDeleteModal", id);
+        return modalRef.Hide();
+    }
+
+    private Task ShowModal()
+    {
+        return modalRef.Show();
     }
 }

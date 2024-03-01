@@ -24,6 +24,14 @@ namespace StockControl.Services
             return planner;
         }
 
+        public async Task<Planner> GetPlannerByID(int id)
+        {
+            var planner = await _context.Planners.FirstOrDefaultAsync(p => p.Id == id);
+
+            return planner;
+        }
+
+
         public async Task<Planner> CREATE(Planner planner)
         {
             if(planner != null)
@@ -38,29 +46,21 @@ namespace StockControl.Services
             }
         }
 
-        public async Task<Planner> UPDATE(int planner, Planner planner1)
+        public async Task<Planner> UPDATE(int plannerId, Planner planner)
         {
-            var plannerDB = await _context.Planners.FindAsync(planner);
+            var plannerDB = await _context.Planners.FindAsync(plannerId);
 
-            plannerDB.ShopOrder = planner1.ShopOrder;
-            plannerDB.Codigo = planner1.Codigo;
-            plannerDB.Codigo2 = planner1.Codigo2;
-            plannerDB.Codigo3 = planner1.Codigo3;
-            plannerDB.Codigo4 = planner1.Codigo4;
-            plannerDB.Codigo5 = planner1.Codigo5;
-            plannerDB.Codigo6 = planner1.Codigo6;
-            plannerDB.Cantidad2 = planner1.Cantidad2;
-            plannerDB.Cantidad3 = planner1.Cantidad3;
-            plannerDB.Cantidad4 = planner1.Cantidad4;
-            plannerDB.Cantidad5 = planner1.Cantidad5;
-            plannerDB.Cantidad6 = planner1.Cantidad6;
-            plannerDB.Cantidad7 = planner1.Cantidad7;
-            plannerDB.Cantidad = planner1.Cantidad;
-            plannerDB.Fecha = planner1.Fecha;
+            if (plannerDB != null)
+            {
+                // Actualiza solo las propiedades que deseas cambiar
+                _context.Entry(plannerDB).CurrentValues.SetValues(planner);
 
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+            }
+
             return plannerDB;
         }
+
 
         public async Task DELETE(int id)
         {
