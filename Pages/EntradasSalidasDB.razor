@@ -26,7 +26,11 @@
     <Columns>
         <RadzenDataGridColumn TItem="Historialinventario" Property="Codigo" Title="N.PARTE" TextAlign="TextAlign.Center"/>
         <RadzenDataGridColumn TItem="Historialinventario" Property="CantidadEntrada" Title="ENTRADAS" TextAlign="TextAlign.Center"/>
-        <RadzenDataGridColumn TItem="Historialinventario" Property="FechaEntrada" Title="FECHA DE ENTRADA" TextAlign="TextAlign.Center" />
+        <RadzenDataGridColumn TItem="Historialinventario" Property="FechaEntrada" Title="FECHA DE ENTRADA" TextAlign="TextAlign.Center">
+            <Template>
+                <span>@context.FechaEntrada.ToShortDateString()</span>
+            </Template>
+        </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="Historialinventario" Property="CantidadSalida" Title="SALIDAS" TextAlign="TextAlign.Center"/>
         <RadzenDataGridColumn TItem="Historialinventario" Property="FechaSalida" Title="FECHA DE SALIDA" TextAlign="TextAlign.Center" />
         <RadzenDataGridColumn TItem="Historialinventario" Property="CantidadFinal" Title="CANTIDAD RESTANTE" TextAlign="TextAlign.Center"/>
