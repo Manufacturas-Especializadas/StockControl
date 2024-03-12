@@ -242,35 +242,32 @@ tr:hover td {
     0% {
         background-color: rgba(255, 0, 0, 1);
     }
-    /* Rojo sólido */
+
     100% {
         background-color: rgba(255, 0, 0, 0.3);
-    }
-    /* Rojo más oscuro */
+    }    
 }
 
 .blink {
     animation-name: example;
     animation-duration: 4s;
-    animation-iteration-count: infinite; /* Repetir la animación indefinidamente */
+    animation-iteration-count: infinite;
 }
 
 .blink-red {
     animation-name: example-red;
     animation-duration: 4s;
-    animation-iteration-count: infinite; /* Repetir la animación indefinidamente */
+    animation-iteration-count: infinite;
 }
 
-/* Estilos adicionales si es necesario */
 .circle {
     display: inline-block;
     width: 35px;
     height: 35px;
     border-radius: 50%;
-    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); /* Degradado transparente a transparente */
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
 }
 
-/* Ajusta los colores según tus necesidades */
 .green {
     background-color: rgba(0, 128, 0, 1);
 }
