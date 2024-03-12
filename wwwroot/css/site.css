@@ -227,34 +227,54 @@ tr:hover td {
     color: white;
 }
 
-.circle {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 5px;
+@keyframes example {
+    0% {
+        background-color: rgba(0, 128, 0, 1);
+    }
+    /* Verde sólido */
+    100% {
+        background-color: rgba(0, 128, 0, 0.3);
+    }
+    /* Verde más oscuro */
 }
 
-.green {
-    background-color: green;
-}
-
-.red {
-    background-color: red;
+@keyframes example-red {
+    0% {
+        background-color: rgba(255, 0, 0, 1);
+    }
+    /* Rojo sólido */
+    100% {
+        background-color: rgba(255, 0, 0, 0.3);
+    }
+    /* Rojo más oscuro */
 }
 
 .blink {
-    animation: blink 5s infinite;
+    animation-name: example;
+    animation-duration: 4s;
+    animation-iteration-count: infinite; /* Repetir la animación indefinidamente */
 }
 
-@keyframes blink {
-    0%, 100% {
-        opacity: .5;
-    }
-
-    50% {
-        opacity: 0.1;
-    }
+.blink-red {
+    animation-name: example-red;
+    animation-duration: 4s;
+    animation-iteration-count: infinite; /* Repetir la animación indefinidamente */
 }
 
+/* Estilos adicionales si es necesario */
+.circle {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)); /* Degradado transparente a transparente */
+}
 
+/* Ajusta los colores según tus necesidades */
+.green {
+    background-color: rgba(0, 128, 0, 1);
+}
+
+.red {
+    background-color: rgba(255, 0, 0, 1);
+}
