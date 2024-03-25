@@ -10,6 +10,7 @@ using System.Data;
 using StockControl.Models;
 using System.Diagnostics;
 using StockControl.Pages;
+using System.Linq.Dynamic.Core;
 
 namespace StockControl.Services
 {
@@ -26,6 +27,28 @@ namespace StockControl.Services
         {
             return await _context.Entradas.ToListAsync();
         }
+
+        public async Task<int> GetTotalPagesAsync(int PageSize)
+        {
+            var totalItems = await _context.Entradas.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalItems / (double)PageSize);
+            return totalPages;
+        }
+
+        public async Task<List<Entrada>> GetPagedEntradas(int PageNumber, int PageSize)
+        {
+            try
+            {
+                var skip = PageNumber == 1 ? 0 : (PageNumber - 1) * PageSize;
+                return _context.Entradas.OrderBy(s => s.Id).Skip(skip).Take(PageSize).ToList();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            return new List<Entrada>();
+        }
+
 
         public async Task InsertDataBase(List<string> codigos)
         {
