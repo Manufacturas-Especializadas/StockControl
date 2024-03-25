@@ -341,3 +341,22 @@ tr:hover td {
     background: #E91E63;
     color: #fff;
 }
+
+.button-success-custom {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 0.2em solid #1EE977;
+    background: rgba(0, 0, 0, 0);
+    padding: 0.45em 1em;
+    color: #1EE946;
+    border-radius: 2em;
+    transition: 1s;
+}
+
+.button-success-custom:hover,
+.button-success-custom:focus,
+.button-success-custom:active {
+    background: #1EE977;
+    color: #fff;
+}

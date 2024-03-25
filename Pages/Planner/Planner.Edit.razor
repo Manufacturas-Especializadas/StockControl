@@ -15,7 +15,7 @@
 
 <a href="/planner" class="link-primary text-decoration-none pb-3 fw-bold"><i class="bi bi-arrow-left p-2"></i>Volver atrás</a>
 
-<div class="container mt-4">
+<div class="container mt-4 mb-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card bg-white shadow-lg">
@@ -52,7 +52,9 @@
                             <InputText class="input-text col-6" placeholder="Cantidad Total" @bind-Value=planner.Cantidad required />
                             <InputDate class="input-date col-4" @bind-Value="planner.Fecha" required />
                         </div>
-                        <button class="button-custom" type="submit">Enviar</button>
+                        <div class="text-center">
+                            <button class="button-custom col-8" type="submit">Enviar</button>
+                        </div>
                     </EditForm>
                 </div>
             </div>
