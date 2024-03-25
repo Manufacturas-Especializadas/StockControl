@@ -17,7 +17,7 @@
 <a href="/" class="link-primary text-decoration-none fw-bold"><i class="bi bi-arrow-left p-2"></i>Volver atrás</a>
 
 <div class="d-flex justify-content-end align-items-center">
-    <button class="btn btn-success m-2" @onclick="@(() => nav.NavigateTo("/planner/create"))">Registrar ShopOrder</button>
+    <button class="button-success-custom m-2" @onclick="@(() => nav.NavigateTo("/planner/create"))">Registrar ShopOrder</button>
 </div>
 
 <RadzenDataGrid TItem="Models.Planner" Data="planners" AllowPaging="true" PageSize="10">
@@ -31,8 +31,8 @@
         </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="Models.Planner" Property="Id" Title="Opciones" TextAlign="TextAlign.Center">
             <Template>
-                <button class="btn btn-primary" @onclick="@(() => nav.NavigateTo($"/planneredit/{context.Id}"))">Editar</button>
-                <button class="btn btn-danger" @onclick="@(() => ShowPlannerDetails(context))">Detalles</button>
+                <button class="button-custom" @onclick="@(() => nav.NavigateTo($"/planneredit/{context.Id}"))">Editar</button>
+                <button class="button-custom-danger" @onclick="@(() => ShowPlannerDetails(context))">Detalles</button>
             </Template>
         </RadzenDataGridColumn>
     </Columns>
