@@ -101,99 +101,6 @@ th, td {
 }
 
 
-/*   FORMULARIO   */
-
-/* Estilos generales para el formulario */
-.form-container {
-    max-width: 300px;
-    margin: 10px auto;
-    padding: 10px 20px;
-    background: #f4f7f8;
-    border-radius: 8px;
-}
-
-/* Estilos generales para los inputs, textarea y select */
-.input-field {
-    background: rgba(255,255,255,0.1);
-    border: none;
-    font-size: 16px;
-    height: auto;
-    margin: 0;
-    outline: 15px;
-    padding: 15px;
-    width: 100%;
-    background-color: #e8eeef;
-    color: #8a97a0;
-    box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
-    margin-bottom: 30px;
-}
-
-.input-number {
-    width: 50%;
-}
-
-/* Estilos generales para radio buttons y checkboxes */
-.inputRadio, .inputCheckBox {
-    margin: 0 4px 8px 0;
-}
-
-/* Estilos generales para selects */
-select {
-    padding: 6px;
-    height: 32px;
-    border-radius: 2px;
-}
-
-/* Estilos generales para botones */
-.button {
-    padding: 19px 39px 18px 39px;
-    color: #FFF;
-    background-color: #4B97C9;
-    font-size: 18px;
-    text-align: center;
-    font-style: normal;
-    width: 100%;
-    border: 1px solid #3A51C1;
-    border-width: 1px 1px 3px;
-    box-shadow: 0 -1px 0 rgba(255,255,255,0.1) inset;
-    margin-bottom: 10px;
-}
-
-/* Estilos generales para fieldsets */
-.fieldset {
-    margin-bottom: 3px;
-    border: none;
-}
-
-/* Estilos generales para labels */
-.label {
-    display: block;
-    margin-bottom: 8px;
-}
-
-/* Estilos para números */
-.number {
-    background-color: #5F8ACF;
-    color: #fff;
-    height: 30px;
-    width: 30px;
-    display: inline-block;
-    font-size: 0.8em;
-    margin-right: 4px;
-    line-height: 30px;
-    text-align: center;
-    text-shadow: 0 1px 0 rgba(255,255,255,0.2);
-    border-radius: 100%;
-}
-
-
-@media screen and (min-width: 480px){
-    .EditForm{
-        max-width: 480px;
-    }
-}
-
-
 /* Tabla  */
 
 .main-container {
@@ -274,4 +181,163 @@ tr:hover td {
 
 .red {
     background-color: rgba(255, 0, 0, 1);
+}
+
+/* css tabla  */
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px auto;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 95%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: #17a6e8;
+    color: #ffffff;
+    text-align: center;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+    text-align: center;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+    text-align: center;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #17a6e8;
+    text-align: center;
+}
+
+.styled-table tbody tr.active-row {
+    color: #17a6e8;
+}
+
+/* css input */
+
+.input-text {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    outline: none;
+    border-bottom: 0.2em solid #1E40E9;
+    background: rgba(30, 125, 233, 0.2);
+    border-radius: 0.2em 0.2em 0 0;
+    padding: 0.4em;
+    color: #1E40E9;
+}
+
+.input-text::placeholder {
+    color: #1E40E9;
+    font-size: small;
+}
+
+.input-number {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    outline: none;
+    border-bottom: 0.2em solid #1E40E9;
+    background: rgba(30, 125, 233, 0.2);
+    border-radius: 0.2em 0.2em 0 0;
+    padding: 0.4em;
+    color: #1E40E9;
+}
+
+.input-number::placeholder {
+    color: #1E40E9;
+    font-size: small;
+}
+
+.input-file {
+    display: none;
+}
+
+.label-file {
+    display: inline-block;
+    width: fit-content;
+    color: #1E40E9;
+    background: rgba(0, 0, 0, 0);
+    padding: 0.45em 1em;
+    color: #1E40E9;
+    border-radius: 2em;
+    transition: 1s;
+}
+
+
+.label-file:hover, .label-file:focus, .label-file:active {
+    background: #1E40E9;
+    color: #fff;
+}
+
+.input-date {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    outline: none;
+    border-bottom: 0.2em solid #1E40E9;
+    background: rgba(30, 125, 233, 0.2);
+    border-radius: 0.2em 0.2em 0 0;
+    padding: 0.4em;
+    color: #1E40E9;
+}
+
+.input-date::placeholder {
+    color: #1E40E9;
+    font-size: small;
+}
+
+/* css button */
+
+.button-custom {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 0.2em solid #1E40E9;
+    background: rgba(0, 0, 0, 0);
+    padding: 0.45em 1em;
+    color: #1E40E9;
+    border-radius: 2em;
+    transition: 1s;
+}
+
+.button-custom:hover,
+.button-custom:focus,
+.button-custom:active {
+    background: #1E40E9;
+    color: #fff;
+}
+
+.button-custom-danger {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 0.2em solid #E91E63;
+    background: rgba(0, 0, 0, 0);
+    padding: 0.45em 1em;
+    color: #E91E63;
+    border-radius: 2em;
+    transition: 1s;
+}
+
+.button-custom-danger:hover,
+.button-custom-danger:focus,
+.button-custom-danger:active {
+    background: #E91E63;
+    color: #fff;
 }

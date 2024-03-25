@@ -15,73 +15,44 @@
 
 <a href="/planner" class="link-primary text-decoration-none pb-3 fw-bold"><i class="bi bi-arrow-left p-2"></i>Volver atrás</a>
 
-<div class="container mt-4">
+<div class="container mt-4 mb-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card bg-white shadow-lg">
                 <div class="card-body">
                     <EditForm Model="planner" class="row g-3 needs-validation" OnValidSubmit="(() => Create())">
-                        <div class="col-12">
-                            <label class="form-label">ShopOrder</label>
-                            <InputNumber class="form-control" @bind-Value="planner.ShopOrder" required />
+                        <div class="text-center">
+                            <InputNumber class="input-number col-10" placeholder="Shop Order" @bind-Value="planner.ShopOrder" required />
                         </div>
-                        <div class="col-4">
-                            <label class="form-label">N.Parte</label>
-                            <InputText class="form-control" @bind-Value="planner.Codigo" required />
+                        <div class="text-center">
+                            <InputText class="input-text col-6"  placeholder="N.Parte" @bind-Value="planner.Codigo" required />
+                            <InputNumber class="input-number col-4" placeholder="Cantidad" @bind-Value="planner.Cantidad2" />
                         </div>
-                        <div class="col-2">
-                            <label class="form-label">Cantidad</label>
-                            <InputNumber class="form-control" @bind-Value="planner.Cantidad2"/>
+                        <div class="text-center">
+                            <InputText class="input-text col-6" placeholder="N.Parte" @bind-Value="planner.Codigo2" />
+                            <InputNumber class="input-number col-4" placeholder="Cantidad" @bind-Value="planner.Cantidad3" />
                         </div>
-                        <div class="col-4">
-                            <label class="form-label">N.Parte</label>
-                            <InputText class="form-control" @bind-Value="planner.Codigo2" />
+                        <div class="text-center">
+                            <InputText class="input-text col-6" placeholder="N.Parte" @bind-Value="planner.Codigo3" />
+                            <InputNumber class="input-number col-4" placeholder="Cantidad" @bind-Value="planner.Cantidad4" />
                         </div>
-                        <div class="col-2">
-                            <label class="form-label">Cantidad</label>
-                            <InputNumber class="form-control" @bind-Value="planner.Cantidad3"/>
+                        <div class="text-center">
+                            <InputText class="input-text col-6" placeholder="N.Parte" @bind-Value="planner.Codigo4" />
+                            <InputNumber class="input-number col-4" placeholder="Cantiadad" @bind-Value="planner.Cantidad5" />
                         </div>
-                        <div class="col-4">
-                            <label class="form-label">N.Parte</label>
-                            <InputText class="form-control" @bind-Value="planner.Codigo3" />
+                        <div class="text-center">
+                            <InputText class="input-text col-6" placeholder="N.Parte" @bind-Value="planner.Codigo5" />
+                            <InputNumber class="input-number col-4" placeholder="Cantidad" @bind-Value="planner.Cantidad6" />
                         </div>
-                        <div class="col-2">
-                            <label class="form-label">Cantidad</label>
-                            <InputNumber class="form-control" @bind-Value="planner.Cantidad4"/>
+                        <div class="text-center">
+                            <InputText class="input-text col-6" placeholder="N.Parte" @bind-Value="planner.Codigo6"/>
+                            <InputNumber class="input-number col-4" placeholder="Cantiadad" @bind-Value="planner.Cantidad7" />
                         </div>
-                        <div class="col-4">
-                            <label class="form-label">N.Parte</label>
-                            <InputText class="form-control" @bind-Value="planner.Codigo4" />
+                        <div class="text-center">
+                            <InputText class="input-text col-6" placeholder="Cantidad Total" @bind-Value=planner.Cantidad required />
+                            <InputDate class="input-date col-4" @bind-Value="planner.Fecha" required />
                         </div>
-                        <div class="col-2">
-                            <label class="form-label">Cantidad</label>
-                            <InputNumber class="form-control" @bind-Value="planner.Cantidad5"/>
-                        </div>
-                        <div class="col-4">
-                            <label class="form-label">N.Parte</label>
-                            <InputText class="form-control" @bind-Value="planner.Codigo5" />
-                        </div>
-                        <div class="col-2">
-                            <label class="form-label">Cantidad</label>
-                            <InputNumber class="form-control" @bind-Value="planner.Cantidad6"/>
-                        </div>
-                        <div class="col-4">
-                            <label class="form-label">N.Parte</label>
-                            <InputText class="form-control" @bind-Value="planner.Codigo6"/>
-                        </div>
-                        <div class="col-2">
-                            <label class="form-label">Cantidad</label>
-                            <InputNumber class="form-control" @bind-Value="planner.Cantidad7"/>
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">Cantidad Total</label>
-                            <InputText class="form-control" @bind-Value=planner.Cantidad required />
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">Fecha</label>
-                            <InputDate class="form-control" @bind-Value="planner.Fecha" required />
-                        </div>
-                        <button class="btn btn-primary" type="submit">Enviar</button>
+                        <button class="button-custom" type="submit">Enviar</button>
                     </EditForm>
                 </div>
             </div>
