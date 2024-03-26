@@ -27,24 +27,58 @@
 </Alert>
 <InputFile OnChange="@ImportCsvFile" class="btn btn-primary mb-2 mt-3" />
 
-<RadzenDataGrid TItem="Salida" Data="@salidas" AllowPaging="true" PageSize="10">
-    <Columns>
-        <RadzenDataGridColumn TItem="Salida" Property="Codigo" Title="N.PARTE" TextAlign="TextAlign.Center"/>
-        <RadzenDataGridColumn TItem="Salida" Property="FechaRegistro" Title="FECHA" TextAlign="TextAlign.Center" />
-    </Columns>
-</RadzenDataGrid>
+<div class="table-responsive">
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>N.PARTE</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        @if(salidas != null)
+        {
+            @foreach(var item in salidas)
+            {
+                <tr>
+                    <td>@item.Codigo</td>
+                    <td>@item.FechaRegistro</td>
+                </tr>
+            }
+        }
+    </table>
+</div>
 
+<PaginationM CurrentPage="currentPage"
+             TotalPages="totalPages"
+             SelectedPage="@SelectedPageAsync" />
 
 @code {
     DataTable dt = new DataTable();
     List<Salida> salidas = new List<Salida>();
 
     bool showAlert = false;
+
+    private int currentPage = 1;
+    private int totalPages;
+    private int PigeSize;
+
     Alert alertRef;
 
     protected override async Task OnInitializedAsync()
     {
-        salidas = await services.GetSalidas();
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        salidas = await services.GetPagedSalidas(currentPage, 10);
+        totalPages = await services.GetTotalPagesAsync(10);
+    }
+
+    private async Task SelectedPageAsync(int page)
+    {
+        currentPage = page;
+        await LoadData();
     }
 
     private async Task ImportCsvFile(InputFileChangeEventArgs e)
