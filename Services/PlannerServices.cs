@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StockControl.Models;
+using System.Diagnostics;
 
 namespace StockControl.Services
 {
@@ -29,6 +30,27 @@ namespace StockControl.Services
             var planner = await _context.Planners.FirstOrDefaultAsync(p => p.Id == id);
 
             return planner;
+        }
+
+        public async Task<int> GetTotalPagesAsync(int PageSize)
+        {
+            var totalItems = await _context.Planners.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalItems / (double)PageSize);
+            return totalPages;
+        }
+
+        public async Task<List<Planner>> GetPagedPlanners(int PageNumber, int PageSize)
+        {
+            try
+            {
+                var skip = PageNumber == 1 ? 0 : (PageNumber - 1) * PageSize;
+                return _context.Planners.OrderBy(s => s.Id).Skip(skip).Take(PageSize).ToList();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            return new List<Planner>();
         }
 
 
