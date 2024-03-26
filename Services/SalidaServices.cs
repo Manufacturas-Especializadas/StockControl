@@ -29,8 +29,26 @@ namespace StockControl.Services
             return await _context.Salidas.ToListAsync();
         }
 
+        public async Task<int> GetTotalPagesAsync(int PageSize)
+        {
+            var totalItems = await _context.Salidas.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalItems / (double)PageSize);
+            return totalPages;
+        }
 
-
+        public async Task<List<Salida>> GetPagedSalidas(int PageNumber, int PageSize)
+        {
+            try
+            {
+                var skip = PageNumber == 1 ? 0 : (PageNumber - 1) * PageSize;
+                return _context.Salidas.OrderBy(s => s.Id).Skip(skip).Take(PageSize).ToList();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            return new List<Salida>();
+        }
 
         public async Task InserDataBase(List<string> codigos)
         {
