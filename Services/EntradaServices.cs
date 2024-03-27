@@ -54,20 +54,19 @@ namespace StockControl.Services
         {
             try
             {
-                // Verificar si la lista de códigos es nula o vacía
+                // Verifica si la lista de códigos es nula o vacía
                 if (codigos == null || !codigos.Any())
                 {
                     Debug.WriteLine("La lista de códigos es nula o vacía.");
                     return;
                 }
 
-                // Iterar sobre la lista de códigos
+                // Itera sobre la lista de códigos
                 foreach (var codigo in codigos)
                 {
-                    // Imprimir información de depuración
                     Debug.WriteLine($"Insertando codigo: {codigo}");
 
-                    // Crear una nueva entrada con el código actual, la fecha actual y el conteo establecido en 1
+                    // Crea una nueva entrada con el código actual, la fecha actual y el conteo establecido en 1
                     var entrada = new Entrada
                     {
                         Codigo = codigo,
@@ -75,22 +74,18 @@ namespace StockControl.Services
                         Conteo = 1 // Siempre establece el conteo en 1
                     };
 
-                    // Agregar la nueva entrada al contexto de base de datos
+                    // Agrega la nueva entrada al contexto de base de datos
                     _context.Entradas.Add(entrada);
                 }
 
-                // Imprimir información de depuración
                 Debug.WriteLine("Guardando cambios en la base de datos...");
 
-                // Guardar los cambios en la base de datos de forma asíncrona
                 await _context.SaveChangesAsync();
 
-                // Imprimir información de depuración
                 Debug.WriteLine("Cambios guardados exitosamente");
             }
             catch (Exception ex)
             {
-                // Capturar y manejar excepciones, imprimir información de depuración en caso de error
                 Debug.WriteLine($"Error al insertar datos en la base de datos: {ex.Message}");
             }
         }

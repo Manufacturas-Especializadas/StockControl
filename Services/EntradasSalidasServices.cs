@@ -46,11 +46,11 @@ namespace StockControl.Services
         {
             try
             {
-                // Obtener todas las entradas y salidas de la base de datos
+                // Obtene todas las entradas y salidas de la base de datos
                 var entradas = await _context.Entradas.ToListAsync();
                 var salidas = await _context.Salidas.ToListAsync();
 
-                // Crear un diccionario para almacenar las salidas agrupadas por código y fecha
+                // Crea un diccionario para almacenar las salidas agrupadas por código y fecha
                 var salidasAgrupadas = salidas
                     .GroupBy(s => new { s.Codigo, FechaRegistro = s.FechaRegistro.Date })
                     .ToDictionary(
@@ -58,10 +58,10 @@ namespace StockControl.Services
                         s => s.Sum(x => x.Conteo)
                     );
 
-                // Crear una lista para almacenar el historial de inventario
+                // Crea una lista para almacenar el historial de inventario
                 var historialInventario = new List<Historialinventario>();
 
-                // Agrupar las entradas por código y fecha, sumando la cantidad (conteo)
+                // Agrupa las entradas por código y fecha, sumando la cantidad (conteo)
                 var entradasAgrupadas = entradas
                     .GroupBy(e => new { e.Codigo, FechaRegistro = e.FechaRegistro.Date })
                     .Select(e => new Historialinventario
@@ -73,24 +73,24 @@ namespace StockControl.Services
                     .OrderBy(e => e.FechaEntrada)
                     .ToList();
 
-                // Iterar sobre las entradas agrupadas para calcular la cantidad de salidas y final
+                // Itera sobre las entradas agrupadas para calcular la cantidad de salidas y final
                 foreach (var entrada in entradasAgrupadas)
                 {
-                    // Intentar obtener la cantidad de salidas correspondiente a la entrada actual
+                    // Intenta obtener la cantidad de salidas correspondiente a la entrada actual
                     if (salidasAgrupadas.TryGetValue(new KeyValuePair<string, DateTime>(entrada.Codigo, entrada.FechaEntrada),
                         out var cantidadSalida))
                     {
-                        // Asignar la cantidad de salidas y calcular la cantidad final
+                        // Asigna la cantidad de salidas y calcular la cantidad final
                         entrada.CantidadSalida = cantidadSalida;
                         entrada.CantidadFinal = entrada.CantidadEntrada - cantidadSalida;
 
-                        // Obtener la fecha de salida
+                        // Obtiene la fecha de salida
                         var fechaSalida = salidas
                             .Where(s => s.Codigo == entrada.Codigo && s.FechaRegistro.Date == entrada.FechaEntrada.Date)
                             .Select(s => s.FechaRegistro)
                             .FirstOrDefault();
 
-                        // Asignar la fecha de salida si existe
+                        // Asigna la fecha de salida si existe
                         entrada.FechaSalida = fechaSalida;
                     }
                     else
@@ -101,15 +101,15 @@ namespace StockControl.Services
                         entrada.FechaSalida = null;
                     }
 
-                    // Guardar el historial de inventario en la lista
+                    // Guarda el historial de inventario en la lista
                     historialInventario.Add(entrada);
                 }
 
-                // Guardar el historial de inventario en la base de datos
+                // Guarda el historial de inventario en la base de datos
                 await _context.Historialinventarios.AddRangeAsync(historialInventario);
                 await _context.SaveChangesAsync();
 
-                // Retornar el historial de inventario
+                // Retorna el historial de inventario
                 return historialInventario;
             }
             catch (Exception ex)
