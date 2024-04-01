@@ -21,12 +21,17 @@
             <div class="card bg-white shadow-lg">
                 <div class="card-body">
                     <EditForm Model="planner" class="row g-3 needs-validation" OnValidSubmit="(() => Create())">
+                        <DataAnnotationsValidator/>
                         <div class="text-center">
-                            <InputNumber class="input-number col-10" placeholder="Shop Order" @bind-Value="planner.ShopOrder" required />
+                            <InputNumber class="input-number col-10" placeholder="Shop Order" @bind-Value="planner.ShopOrder" />
+                            <ValidationMessage For="(() => planner.ShopOrder)"/>
                         </div>
                         <div class="text-center">
-                            <InputText class="input-text col-6"  placeholder="N.Parte" @bind-Value="planner.Codigo" required />
+                            <InputText class="input-text col-6"  placeholder="N.Parte" @bind-Value="planner.Codigo" />
+                            <ValidationMessage For="(() => planner.Codigo)"/>
+
                             <InputNumber class="input-number col-4" placeholder="Cantidad" @bind-Value="planner.Cantidad2" />
+                            <ValidationMessage For="(() => planner.Cantidad2)"/>
                         </div>
                         <div class="text-center">
                             <InputText class="input-text col-6" placeholder="N.Parte" @bind-Value="planner.Codigo2" />
@@ -49,8 +54,11 @@
                             <InputNumber class="input-number col-4" placeholder="Cantidad" @bind-Value="planner.Cantidad7" />
                         </div>
                         <div class="text-center">
-                            <InputText class="input-text col-6" placeholder="Cantidad Total" @bind-Value=planner.Cantidad required />
-                            <InputDate class="input-date col-4" @bind-Value="planner.Fecha" required />
+                            <InputText class="input-text col-6" placeholder="Cantidad Total" @bind-Value=planner.Cantidad />
+                            <ValidationMessage For="(() => planner.Cantidad)"/>
+
+                            <InputDate class="input-date col-4" @bind-Value="planner.Fecha" />
+                            <ValidationMessage For="(() => planner.Fecha)"/>
                         </div>
                         <div class="text-center">
                             <button class="button-custom col-8" type="submit">Enviar</button>

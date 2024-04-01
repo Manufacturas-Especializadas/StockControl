@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace StockControl.Models;
 
@@ -9,12 +10,17 @@ public partial class Planner
 {
     public int Id { get; set; }
 
+    [Required(ErrorMessage = "Este campo es requerido")]
+    [Range(1,int.MaxValue, ErrorMessage = "Maximo 9 digitos")]
     public int? ShopOrder { get; set; }
 
+    [Required(ErrorMessage = "Este campo es requerido")]
     public string Codigo { get; set; }
 
+    [Required(ErrorMessage = "Este campo es requerido")]
     public DateTime? Fecha { get; set; }
 
+    [Required(ErrorMessage = "Este campo es requerido")]
     public string Cantidad { get; set; }
 
     public string Codigo2 { get; set; }
@@ -25,6 +31,7 @@ public partial class Planner
 
     public string Codigo5 { get; set; }
 
+    [Required(ErrorMessage = "Este campo es requerido")]
     public int? Cantidad2 { get; set; }
 
     public int? Cantidad3 { get; set; }
