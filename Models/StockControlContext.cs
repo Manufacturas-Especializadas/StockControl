@@ -19,7 +19,11 @@ public partial class StockControlContext : DbContext
 
     public virtual DbSet<Planner> Planners { get; set; }
 
+    public virtual DbSet<Register> Registers { get; set; }
+
     public virtual DbSet<Registrohistorico> Registrohistoricos { get; set; }
+
+    public virtual DbSet<Rol> Rols { get; set; }
 
     public virtual DbSet<Salida> Salidas { get; set; }
 
@@ -29,14 +33,12 @@ public partial class StockControlContext : DbContext
     {
         modelBuilder.Entity<Entrada>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ENTRADAS__3214EC077A17FDC6");
+            entity.HasKey(e => e.Id).HasName("PK__ENTRADAS__3214EC0749E21D00");
 
             entity.ToTable("ENTRADAS");
 
             entity.Property(e => e.Codigo).IsUnicode(false);
-            entity.Property(e => e.FechaRegistro)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
+            entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Historialinventario>(entity =>
@@ -52,7 +54,7 @@ public partial class StockControlContext : DbContext
 
         modelBuilder.Entity<Planner>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__PLANNER__3214EC071FE0ECE2");
+            entity.HasKey(e => e.Id).HasName("PK__PLANNER__3214EC07C15E0935");
 
             entity.ToTable("PLANNER");
 
@@ -76,9 +78,24 @@ public partial class StockControlContext : DbContext
             entity.Property(e => e.Fecha).HasColumnType("datetime");
         });
 
+        modelBuilder.Entity<Register>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("Pk_LoginId");
+
+            entity.ToTable("REGISTER");
+
+            entity.Property(e => e.Email).IsUnicode(false);
+            entity.Property(e => e.FkRol).HasColumnName("fk_Rol");
+            entity.Property(e => e.Password).IsUnicode(false);
+
+            entity.HasOne(d => d.FkRolNavigation).WithMany(p => p.Registers)
+                .HasForeignKey(d => d.FkRol)
+                .HasConstraintName("fk_RolId");
+        });
+
         modelBuilder.Entity<Registrohistorico>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__REGISTRO__3214EC07E4CD6FF2");
+            entity.HasKey(e => e.Id).HasName("PK__REGISTRO__3214EC072D7FD856");
 
             entity.ToTable("REGISTROHISTORICO");
 
@@ -86,16 +103,25 @@ public partial class StockControlContext : DbContext
             entity.Property(e => e.PartNumber).IsUnicode(false);
         });
 
+        modelBuilder.Entity<Rol>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("Pk_RolId");
+
+            entity.ToTable("ROL");
+
+            entity.Property(e => e.Rol1)
+                .IsUnicode(false)
+                .HasColumnName("Rol");
+        });
+
         modelBuilder.Entity<Salida>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__SALIDAS__3214EC076E93D310");
+            entity.HasKey(e => e.Id).HasName("PK__SALIDAS__3214EC0709C425AD");
 
             entity.ToTable("SALIDAS");
 
             entity.Property(e => e.Codigo).IsUnicode(false);
-            entity.Property(e => e.FechaRegistro)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
+            entity.Property(e => e.FechaRegistro).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Shoporder>(entity =>
