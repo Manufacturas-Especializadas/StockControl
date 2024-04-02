@@ -31,6 +31,7 @@ builder.Services.AddScoped<EntradasSalidasServices>();
 builder.Services.AddScoped<PlannerServices>();
 builder.Services.AddScoped<ShopOrderServices>();
 builder.Services.AddScoped<HistorialServices>();
+builder.Services.AddScoped<RegisterServices>();
 
 var app = builder.Build();
 

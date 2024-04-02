@@ -28,7 +28,15 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[REGISTER]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[REGISTROHISTORICO]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ROL]",
          "ObjectType": 0
       },
       {
