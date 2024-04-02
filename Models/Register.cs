@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace StockControl.Models;
 
@@ -9,8 +10,11 @@ public partial class Register
 {
     public int Id { get; set; }
 
+    [Required(ErrorMessage = "Este campo es requerido")]
+    [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "Debes ingresar un email valido")]
     public string Email { get; set; }
 
+    [Required(ErrorMessage = "Este campo es requerido")]
     public string Password { get; set; }
 
     public int? FkRol { get; set; }

@@ -17,5 +17,19 @@ namespace StockControl.Services
             return await _context.Rols.ToListAsync();
         }
 
+        public async Task<Register> CREATE(Register register)
+        {
+            if (register != null)
+            {
+               await _context.Registers.AddAsync(register);
+               await _context.SaveChangesAsync();
+               return register;
+            }
+            else
+            {
+                return new Register();
+            }
+        }
+
     }
 }
