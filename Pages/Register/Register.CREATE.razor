@@ -9,19 +9,17 @@
 @inject RegisterServices services;
 @inject NavigationManager nav;
 
-<a href="/" class="link-primary text-decoration-none pb-3 fw-bold">
+<a href="/usuarios" class="link-primary text-decoration-none pb-3 fw-bold">
     <i class="bi bi-arrow-left p-2">
-
-</i>Volver atrás</a>
+        Volver atrás
+    </i>
+</a>
 
 
 <div class="container mt-4 mb-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card bg-white shadow-lg">
-                <div class="card-header text-center">
-                    <img src="css/logomesa.png" alt="Alternate Text" />
-                </div>
                 <div class="card-body">
                     <EditForm Model="register" OnValidSubmit="(() => Create())">
                         <DataAnnotationsValidator/>
