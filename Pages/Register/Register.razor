@@ -1,0 +1,70 @@
+﻿@page "/usuarios"
+
+@using StockControl.Models;
+@using StockControl.Services;
+
+@inject RegisterServices services;
+@inject NavigationManager nav;
+
+<PageTitle> Usuarios </PageTitle>
+
+<h3>Listado de usuarios</h3>
+
+<div class="d-flex justify-content-end align-items-center">
+    <button class="button-success-custom me-2 mt-2" @onclick="@(() => nav.NavigateTo("/registro/create"))">Registrar usuario</button>
+</div>
+
+<div class="table-responsive">
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        @if(registers != null)
+        {
+            @foreach(var item in registers)
+            {
+                <tr>
+                    <td>@item.Email</td>
+                    <td>@item.FkRolNavigation?.Rol1</td>
+                    <td>
+                        <button class="button-custom">Editar</button>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+
+<PaginationM CurrentPage="currentPage"
+             TotalPages="totalPages"
+             SelectedPage="@SelectedPageAsync" />
+
+@code {
+    List<Models.Register> registers = new();
+
+    private int currentPage = 1;
+    private int totalPages;
+    private int PageSize;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        registers = await services.GetPagedUsers(currentPage, 10);
+        totalPages = await services.GetTotalPagesAsync(10);
+    }
+
+    private async Task SelectedPageAsync(int page)
+    {
+        currentPage = page;
+        await LoadData();
+    }
+}
