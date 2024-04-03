@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using StockControl.Models;
 using System.Diagnostics;
 
@@ -43,6 +44,28 @@ namespace StockControl.Services
             }
             return new List<Register>();
         }
+
+        public async Task<Register> UPDATE(int registerID,Register register)
+        {
+            var registerToUpdate = await _context.Registers
+                                    .Include(r => r.FkRolNavigation)
+                                    .FirstOrDefaultAsync(r => r.Id == registerID);
+
+            if (registerToUpdate != null)
+            {
+                // Actualiza los campos de la entidad Register
+                registerToUpdate.Email = register.Email;
+                registerToUpdate.Password = register.Password;
+
+                // Asocia la entidad Rol
+                registerToUpdate.FkRolNavigation = register.FkRolNavigation;
+
+                await _context.SaveChangesAsync();
+            }
+
+            return registerToUpdate;
+        }
+
 
         public async Task<Register> CREATE(Register register)
         {
