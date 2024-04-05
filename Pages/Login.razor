@@ -1,4 +1,4 @@
-﻿@page "/login"
+﻿@page "/"
 
 @using StockControl.Models;
 @using StockControl.Services;
@@ -53,7 +53,7 @@
 
             if (Authenticated)
             {
-                nav.NavigateTo("/");
+                nav.NavigateTo("/index");
             }
 
         }
