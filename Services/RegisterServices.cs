@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
+using Microsoft.VisualBasic;
 using StockControl.Models;
 using System.Diagnostics;
 
@@ -44,6 +47,27 @@ namespace StockControl.Services
             return new List<Register>();
         }
 
+        public async Task<Register> UPDATE(int registerID,Register register)
+        {
+            var registerToUpdate = await _context.Registers
+                                    .Include(r => r.FkRolNavigation)
+                                    .FirstOrDefaultAsync(r => r.Id == registerID);
+
+            if (registerToUpdate != null)
+            {
+                // Actualiza los campos de la entidad Register
+                registerToUpdate.Email = register.Email;
+                registerToUpdate.Password = register.Password;
+
+                // Asocia la entidad Rol
+                registerToUpdate.FkRolNavigation = register.FkRolNavigation;
+
+                await _context.SaveChangesAsync();
+            }
+
+            return registerToUpdate;
+        }
+
         public async Task<Register> CREATE(Register register)
         {
             if (register != null)
@@ -55,6 +79,29 @@ namespace StockControl.Services
             else
             {
                 return new Register();
+            }
+        }
+
+        public async Task<bool> Authentication(Register register)
+        {
+            try
+            {
+                var user = await _context.Registers.FirstOrDefaultAsync(u => u.Email == register.Email);
+
+                if(user != null && user.Password == user.Password)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error durante la autenticación{ex}");
+                return false;
             }
         }
 

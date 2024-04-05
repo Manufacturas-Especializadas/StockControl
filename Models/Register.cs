@@ -15,6 +15,7 @@ public partial class Register
     public string Email { get; set; }
 
     [Required(ErrorMessage = "Este campo es requerido")]
+    [DataType(DataType.Password)]
     public string Password { get; set; }
 
     public int? FkRol { get; set; }

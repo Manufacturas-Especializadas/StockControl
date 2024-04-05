@@ -8,9 +8,9 @@
 
 <PageTitle> Usuarios </PageTitle>
 
-<h3>Listado de usuarios</h3>
+<h3 class="custom-title">Listado de usuarios</h3>
 
-<a href="/" class="link-primary text-decoration-none pb-3 fw-bold">
+<a href="/index" class="link-primary text-decoration-none pb-3 fw-bold">
     <i class="bi bi-arrow-left p-2">
         Volver atrás
     </i>
@@ -37,7 +37,7 @@
                     <td>@item.Email</td>
                     <td>@item.FkRolNavigation?.Rol1</td>
                     <td>
-                        <button class="button-custom">Editar</button>
+                        <button class="button-custom" @onclick="@(() => nav.NavigateTo($"/registro/edit/{item.Id}"))">Editar</button>
                     </td>
                 </tr>
             }
@@ -50,6 +50,9 @@
              SelectedPage="@SelectedPageAsync" />
 
 @code {
+    [Parameter]
+    public int id { get; set; }
+
     List<Models.Register> registers = new();
 
     private int currentPage = 1;
