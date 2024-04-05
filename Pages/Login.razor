@@ -1,0 +1,65 @@
+﻿@page "/login"
+
+@using StockControl.Models;
+@using StockControl.Services;
+@using System.Diagnostics
+
+@inject RegisterServices services;
+@inject NavigationManager nav;
+
+<PageTitle> Login </PageTitle>
+
+<div class="container mt-4 mb-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card bg-white shadow-lg">
+                <div class="card-header text-center">
+                    <img src="/css/logomesa.png" alt="Alternate Text" />
+                </div>
+                <div class="card-body">
+                    <EditForm Model="register" OnValidSubmit="(() => success())">
+                        <DataAnnotationsValidator />
+
+                        <div class="form-group d-flex justify-content-center m-2">
+                            <InputText class="input-text col-5" placeholder="Email" @bind-Value="register.Email" />
+                            <ValidationMessage For="(() => register.Email)" />
+                        </div>
+
+                        <div class="form-group d-flex justify-content-center m-2">
+                            <InputText type="password" class="input-text col-5" placeholder="Contraseña" @bind-Value="register.Password" />
+                            <ValidationMessage For="(() => register.Password)" />
+                        </div>
+
+                        <div class="text-center">
+                            <button class="button-custom col-4" type="submit">Enviar</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    Models.Register register = new();
+
+    bool Authenticated;
+
+    private async Task success()
+    {
+        try
+        {
+            Authenticated = await services.Authentication(register);
+
+            if (Authenticated)
+            {
+                nav.NavigateTo("/");
+            }
+
+        }
+        catch(Exception ex)
+        {
+            Debug.WriteLine($"Errror al autenticar{ex}"); 
+        }
+    }
+}
