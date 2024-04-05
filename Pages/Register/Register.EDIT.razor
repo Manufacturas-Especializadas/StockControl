@@ -5,10 +5,11 @@
 
 @inject RegisterServices services;
 @inject NavigationManager nav;
+@attribute [Authorize(policy: "AdminPolicy")]
 
 <h3>register.EDIT</h3>
 
-<div class="container mt-4 mb-4">
+<div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card bg-white shadow-lg">

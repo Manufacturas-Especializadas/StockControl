@@ -5,8 +5,11 @@
 
 @inject RegisterServices services;
 @inject NavigationManager nav;
+@attribute [Authorize(policy: "AdminPolicy")]
 
 <PageTitle> Usuarios </PageTitle>
+
+<NavMenu/>
 
 <h3 class="custom-title">Listado de usuarios</h3>
 

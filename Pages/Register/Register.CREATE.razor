@@ -8,6 +8,7 @@
 
 @inject RegisterServices services;
 @inject NavigationManager nav;
+@attribute [Authorize(policy: "AdminPolicy")]
 
 <a href="/usuarios" class="link-primary text-decoration-none pb-3 fw-bold">
     <i class="bi bi-arrow-left p-2">
@@ -16,7 +17,7 @@
 </a>
 
 
-<div class="container mt-4 mb-4">
+<div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card bg-white shadow-lg">
