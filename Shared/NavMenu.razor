@@ -1,47 +1,48 @@
-﻿<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+﻿<nav class="navbar bg-primary navbar-dark fixed-top" style="height: 50px;">
     <div class="container-fluid">
         <span class="navbar-brand fw-bold">
-            MESA
+            MESA -
+            <span class="navbar-brand fw-bold">
+                INNOVACIÓN
+                <i class="bi bi-filter"></i>
+            </span>
         </span>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <button class="navbar-toggler" style="height: 45px;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="bi bi-justify"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <div class="navbar-nav ms-auto">
-                <span class="navbar-brand fw-bold">
-                    <i class="bi bi-filter"></i>
-                    INNOVACIÓN
-                </span>
-                @*                 <a href="#" class="nav-link">Home</a>
-                <a href="#" class="nav-link">Tabla</a>
-                <a href="#" class="nav-link">Login</a>
-                <a href="#" class="nav-link">Formulario</a>
-                <a href="#" class="nav-link">Pause</a> *@
+        <div class="offcanvas offcanvas-end bg-primary navbar-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title text-light" id="offcanvasNavbarLabel">MESA</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Dropdown
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 </nav>
 
-@* <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-    </nav>
-</div> *@
+
 
 @code {
     private bool collapseNavMenu = true;
