@@ -23,18 +23,18 @@ namespace StockControl.Services
 
         public async Task<int> GetTotalPagesAsync(int PageSize)
         {
-            var totalItems = await _context.Registers.CountAsync();
+            var totalItems = await _context.Users.CountAsync();
             var totalPages = (int)Math.Ceiling(totalItems / (double)PageSize);
             return totalPages;
         }
 
-        public async Task<List<Register>> GetPagedUsers(int PageNumber, int PageSize)
+        public async Task<List<User>> GetPagedUsers(int PageNumber, int PageSize)
         {
             try
             {
                 var skip = PageNumber == 1 ? 0 : (PageNumber - 1) * PageSize;
-                return await _context.Registers
-                    .Include(r => r.FkRolNavigation)
+                return await _context.Users
+                    .Include(r => r.Role)
                     .OrderBy(s => s.Id)
                     .Skip(skip)
                     .Take(PageSize)
@@ -44,13 +44,13 @@ namespace StockControl.Services
             {
                 Debug.WriteLine(ex);
             }
-            return new List<Register>();
+            return new List<User>();
         }
 
-        public async Task<Register> UPDATE(int registerID,Register register)
+        public async Task<User> UPDATE(int registerID,User register)
         {
-            var registerToUpdate = await _context.Registers
-                                    .Include(r => r.FkRolNavigation)
+            var registerToUpdate = await _context.Users
+                                    .Include(r => r.Role)
                                     .FirstOrDefaultAsync(r => r.Id == registerID);
 
             if (registerToUpdate != null)
@@ -60,7 +60,7 @@ namespace StockControl.Services
                 registerToUpdate.Password = register.Password;
 
                 // Asocia la entidad Rol
-                registerToUpdate.FkRolNavigation = register.FkRolNavigation;
+                registerToUpdate.Role = register.Role;
 
                 await _context.SaveChangesAsync();
             }
@@ -68,40 +68,49 @@ namespace StockControl.Services
             return registerToUpdate;
         }
 
-        public async Task<Register> CREATE(Register register)
+        public async Task<User> CREATE(User register)
         {
             if (register != null)
             {
-               await _context.Registers.AddAsync(register);
+               await _context.Users.AddAsync(register);
                await _context.SaveChangesAsync();
                return register;
             }
             else
             {
-                return new Register();
+                return new User();
             }
         }
 
-        public async Task<bool> Authentication(Register register)
+        public async Task<(bool, string)> Authentication(User register)
         {
             try
             {
-                var user = await _context.Registers.FirstOrDefaultAsync(u => u.Email == register.Email);
+                var user = await _context.Users
+                    .Include(u => u.Role)
+                    .FirstOrDefaultAsync(u => u.Email == register.Email);
 
-                if(user != null && user.Password == user.Password)
+                if (user != null && user.Password == register.Password)
                 {
-                    return true;
+                    // Verifica si el usuario tiene un rol asociado
+                    if (user.Role != null)
+                    {
+                        return (true, user.Role.Name);
+                    }
+                    else
+                    {
+                        return (false, null);
+                    }
                 }
                 else
                 {
-                    return false;
+                    return (false, null);
                 }
-
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error durante la autenticación{ex}");
-                return false;
+                Debug.WriteLine($"Error durante la autenticación: {ex}");
+                return (false, null);
             }
         }
 
