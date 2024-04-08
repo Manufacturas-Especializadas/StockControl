@@ -10,11 +10,31 @@ using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+//using Microsoft.Data.SqlClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddDbContext<StockControlContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//builder.Services.AddIdentityCore<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//        .AddRoles<IdentityRole>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ProduccionPolicy", policy =>
+    policy.RequireRole("Producción"));
+
+    options.AddPolicy("EmpleadoPolicy", policy =>
+    policy.RequireRole("Empleado"));
+
+    options.AddPolicy("PlannerPolicy", policy =>
+    policy.RequireRole("Planner"));
+
+    options.AddPolicy("AdminPolicy", policy =>
+    policy.RequireRole("Admin"));
+});
+
 builder.Services
     .AddBlazorise(options =>
     {

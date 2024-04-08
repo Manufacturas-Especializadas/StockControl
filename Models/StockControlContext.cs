@@ -19,8 +19,6 @@ public partial class StockControlContext : DbContext
 
     public virtual DbSet<Planner> Planners { get; set; }
 
-    public virtual DbSet<Register> Registers { get; set; }
-
     public virtual DbSet<Registrohistorico> Registrohistoricos { get; set; }
 
     public virtual DbSet<Rol> Rols { get; set; }
@@ -28,6 +26,8 @@ public partial class StockControlContext : DbContext
     public virtual DbSet<Salida> Salidas { get; set; }
 
     public virtual DbSet<Shoporder> Shoporders { get; set; }
+
+    public virtual DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -78,21 +78,6 @@ public partial class StockControlContext : DbContext
             entity.Property(e => e.Fecha).HasColumnType("datetime");
         });
 
-        modelBuilder.Entity<Register>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("Pk_LoginId");
-
-            entity.ToTable("REGISTER");
-
-            entity.Property(e => e.Email).IsUnicode(false);
-            entity.Property(e => e.FkRol).HasColumnName("fk_Rol");
-            entity.Property(e => e.Password).IsUnicode(false);
-
-            entity.HasOne(d => d.FkRolNavigation).WithMany(p => p.Registers)
-                .HasForeignKey(d => d.FkRol)
-                .HasConstraintName("fk_RolId");
-        });
-
         modelBuilder.Entity<Registrohistorico>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__REGISTRO__3214EC072D7FD856");
@@ -109,9 +94,7 @@ public partial class StockControlContext : DbContext
 
             entity.ToTable("ROL");
 
-            entity.Property(e => e.Rol1)
-                .IsUnicode(false)
-                .HasColumnName("Rol");
+            entity.Property(e => e.Name).IsUnicode(false);
         });
 
         modelBuilder.Entity<Salida>(entity =>
@@ -133,6 +116,20 @@ public partial class StockControlContext : DbContext
             entity.Property(e => e.Codigo).IsUnicode(false);
             entity.Property(e => e.FechaShopOrder).HasColumnType("datetime");
             entity.Property(e => e.ShopOrder1).HasColumnName("ShopOrder");
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("Pk_UserId");
+
+            entity.ToTable("USER");
+
+            entity.Property(e => e.Email).IsUnicode(false);
+            entity.Property(e => e.Password).IsUnicode(false);
+
+            entity.HasOne(d => d.Role).WithMany(p => p.Users)
+                .HasForeignKey(d => d.RoleId)
+                .HasConstraintName("FK_User_RoleId");
         });
 
         OnModelCreatingPartial(modelBuilder);

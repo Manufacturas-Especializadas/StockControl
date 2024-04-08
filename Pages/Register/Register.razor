@@ -5,8 +5,11 @@
 
 @inject RegisterServices services;
 @inject NavigationManager nav;
+@attribute [Authorize(policy: "AdminPolicy")]
 
 <PageTitle> Usuarios </PageTitle>
+
+<NavMenu/>
 
 <h3 class="custom-title">Listado de usuarios</h3>
 
@@ -35,7 +38,7 @@
             {
                 <tr>
                     <td>@item.Email</td>
-                    <td>@item.FkRolNavigation?.Rol1</td>
+                    <td>@item.Role?.Name</td>
                     <td>
                         <button class="button-custom" @onclick="@(() => nav.NavigateTo($"/registro/edit/{item.Id}"))">Editar</button>
                     </td>
@@ -53,7 +56,7 @@
     [Parameter]
     public int id { get; set; }
 
-    List<Models.Register> registers = new();
+    List<User> registers = new();
 
     private int currentPage = 1;
     private int totalPages;

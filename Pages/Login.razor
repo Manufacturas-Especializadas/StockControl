@@ -11,7 +11,7 @@
 
 <div class="container mt-4 mb-4">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-6">
             <div class="card bg-white shadow-lg">
                 <div class="card-header text-center">
                     <img src="/css/logomesa.png" alt="Alternate Text" />
@@ -41,25 +41,50 @@
 </div>
 
 @code {
-    Models.Register register = new();
+    User register = new();
 
-    bool Authenticated;
 
     private async Task success()
     {
         try
         {
-            Authenticated = await services.Authentication(register);
+            var authenticationResult = await services.Authentication(register);
 
-            if (Authenticated)
+            var (authenticated, roleName) = authenticationResult;
+
+            if (authenticated)
             {
-                nav.NavigateTo("/index");
+                if (!string.IsNullOrEmpty(roleName))
+                {
+                    if (roleName == "Admin")
+                    {
+                        nav.NavigateTo("/index");
+                    }
+                    else if (roleName == "Empleado")
+                    {
+                        nav.NavigateTo("/index");
+                    }
+                    else
+                    {
+                        // El usuario tiene un rol no reconocido
+                        // Puedes manejar esto de acuerdo a tus necesidades
+                    }
+                }
+                else
+                {
+                    // El usuario no tiene un rol asociado
+                    // Puedes manejar esto de acuerdo a tus necesidades
+                }
             }
-
+            else
+            {
+                // La autenticación falló
+                // Puedes manejar esto de acuerdo a tus necesidades
+            }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            Debug.WriteLine($"Errror al autenticar{ex}"); 
+            Debug.WriteLine($"Error al autenticar: {ex}");
         }
     }
 }

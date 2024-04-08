@@ -5,10 +5,11 @@
 
 @inject RegisterServices services;
 @inject NavigationManager nav;
+@attribute [Authorize(policy: "AdminPolicy")]
 
 <h3>register.EDIT</h3>
 
-<div class="container mt-4 mb-4">
+<div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card bg-white shadow-lg">
@@ -31,7 +32,7 @@
                                 <option value="">--Seleccionar un rol--</option>
                                 @foreach (var item in rols)
                                 {
-                                    <option value="@item.Id">@item.Rol1</option>
+                                    <option value="@item.Id">@item.Name</option>
                                 }
                             </select>
                         </div>
@@ -51,7 +52,7 @@
     [Parameter]
     public int id { get; set; }
 
-    Models.Register register = new();
+    User register = new();
 
     int selectedRoleId;
 
@@ -59,11 +60,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        register = new Models.Register();
+        register = new User();
 
-        if (register.FkRolNavigation != null)
+        if (register.Role != null)
         {
-            selectedRoleId = register.FkRolNavigation.Id;
+            selectedRoleId = register.Role.Id;
         }
 
         rols = await services.GetRol();
@@ -71,7 +72,7 @@
 
     private async Task Update()
     {
-        register.FkRolNavigation = rols.FirstOrDefault(r => r.Id == selectedRoleId);
+        register.Role = rols.FirstOrDefault(r => r.Id == selectedRoleId);
 
         var registerID = await services.UPDATE(id, register);
 

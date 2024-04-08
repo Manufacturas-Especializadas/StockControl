@@ -1,4 +1,5 @@
 ﻿@page "/shoporder"
+@attribute [Authorize(Policy = "AdminPolicy")]
 
 @using StockControl.Services;
 @using StockControl.Models;
@@ -9,7 +10,7 @@
 
 <PageTitle>ShopOrder</PageTitle>
 
-
+<NavMenu/>
 
 
 <h1 class="text-black-bold text-center">ShopOrder</h1>
