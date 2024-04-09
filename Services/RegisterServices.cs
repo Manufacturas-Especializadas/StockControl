@@ -2,8 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using Microsoft.VisualBasic;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using System.Security.Claims;
 using StockControl.Models;
 using System.Diagnostics;
+
 
 namespace StockControl.Services
 {
@@ -16,9 +20,18 @@ namespace StockControl.Services
             _context = context;
         }
 
+        private List<User> _users;
+
         public async Task<List<Rol>>GetRol()
         {
             return await _context.Rols.ToListAsync();
+        }
+
+        public User? GetByUser(string userName)
+        {
+            return _context?.Users
+                .Include(u => u.Role)
+                .FirstOrDefault(u => u.Email == userName);
         }
 
         public async Task<int> GetTotalPagesAsync(int PageSize)
@@ -82,37 +95,37 @@ namespace StockControl.Services
             }
         }
 
-        public async Task<(bool, string)> Authentication(User register)
-        {
-            try
-            {
-                var user = await _context.Users
-                    .Include(u => u.Role)
-                    .FirstOrDefaultAsync(u => u.Email == register.Email);
+        //public async Task<(bool, string)> Authentication(User register)
+        //{
+        //    try
+        //    {
+        //        var user = await _context.Users
+        //            .Include(u => u.Role)
+        //            .FirstOrDefaultAsync(u => u.Email == register.Email);
 
-                if (user != null && user.Password == register.Password)
-                {
-                    // Verifica si el usuario tiene un rol asociado
-                    if (user.Role != null)
-                    {
-                        return (true, user.Role.Name);
-                    }
-                    else
-                    {
-                        return (false, null);
-                    }
-                }
-                else
-                {
-                    return (false, null);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error durante la autenticación: {ex}");
-                return (false, null);
-            }
-        }
+        //        if (user != null && user.Password == register.Password)
+        //        {
+        //            // Verifica si el usuario tiene un rol asociado
+        //            if (user.Role != null)
+        //            {
+        //                return (true, user.Role.Name);
+        //            }
+        //            else
+        //            {
+        //                return (false, null);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return (false, null);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine($"Error durante la autenticación: {ex}");
+        //        return (false, null);
+        //    }
+        //}
 
     }
 }
