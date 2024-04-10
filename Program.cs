@@ -55,6 +55,7 @@ builder.Services.AddScoped<PlannerServices>();
 builder.Services.AddScoped<ShopOrderServices>();
 builder.Services.AddScoped<HistorialServices>();
 builder.Services.AddScoped<RegisterServices>();
+builder.Services.AddScoped<CustomAuthenticationStateProvider>();
 
 var app = builder.Build();
 

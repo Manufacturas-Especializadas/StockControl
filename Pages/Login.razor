@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@* @page "/" *@
 
 @using StockControl.Models;
 @using StockControl.Services;
@@ -6,6 +6,10 @@
 
 @inject RegisterServices services;
 @inject NavigationManager nav;
+@inject IJSRuntime js
+@inject AuthenticationStateProvider authStateProvider;
+@inject NavigationManager nav;
+@inject CustomAuthenticationStateProvider authStateProvider;
 
 <PageTitle> Login </PageTitle>
 
@@ -42,49 +46,42 @@
 
 @code {
     User register = new();
-
+  
 
     private async Task success()
     {
         try
         {
-            var authenticationResult = await services.Authentication(register);
+            var userAccount = services.GetByUser(register.Email);
 
-            var (authenticated, roleName) = authenticationResult;
-
-            if (authenticated)
+            if (userAccount == null)
             {
-                if (!string.IsNullOrEmpty(roleName))
-                {
-                    if (roleName == "Admin")
-                    {
-                        nav.NavigateTo("/index");
-                    }
-                    else if (roleName == "Empleado")
-                    {
-                        nav.NavigateTo("/index");
-                    }
-                    else
-                    {
-                        // El usuario tiene un rol no reconocido
-                        // Puedes manejar esto de acuerdo a tus necesidades
-                    }
-                }
-                else
-                {
-                    // El usuario no tiene un rol asociado
-                    // Puedes manejar esto de acuerdo a tus necesidades
-                }
+                await js.InvokeVoidAsync("alert", "Correo electrónico no encontrado");
+            }
+            else if (userAccount.Password != register.Password)
+            {
+                await js.InvokeVoidAsync("alert", "Contraseña incorrecta");
             }
             else
             {
-                // La autenticación falló
-                // Puedes manejar esto de acuerdo a tus necesidades
+                nav.NavigateTo("/index", true);
+            }
+
+            var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
+
+            if (customAuthStateProvider != null)
+            {
+                await customAuthStateProvider.UpdateAuthenticationState(new User
+                    {
+                        Email = userAccount.Email,
+                        Role = userAccount.Role
+                    });
             }
         }
-        catch (Exception ex)
+        catch(Exception ex)
         {
-            Debug.WriteLine($"Error al autenticar: {ex}");
+            Debug.WriteLine($"ERROR{ex}");
         }
+
     }
 }
