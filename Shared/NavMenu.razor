@@ -1,55 +1,45 @@
-﻿<nav class="navbar bg-primary navbar-dark fixed-top small">
-    <div class="container-fluid">
-        <span class="navbar-brand fw-bold">
+﻿<nav class="navbar-mesa">
+    <input type="checkbox" id="sidebar-active">
+    <label for="sidebar-active" class="open-sidebar-button">
+        <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" /></svg>
+    </label>
+    <label id="overlay" for="sidebar-active"></label>
+    <div class="links-container">
+        <label for="sidebar-active" class="close-sidebar-button">
+            <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" /></svg>
+        </label>
+
+        <a class="home-link" href="/">
             MESA -
-            <span class="navbar-brand fw-bold">
+            <span>
                 INNOVACIÓN
                 <i class="bi bi-filter"></i>
             </span>
-        </span>
-        <button class="navbar-toggler" style="height: 45px;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-            <span class="bi bi-justify"></span>
-        </button>
-        <div class="offcanvas offcanvas-end bg-primary navbar-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title text-light" id="offcanvasNavbarLabel">MESA</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item">
-                        <NavLink class="nav-link active" aria-current="page" href="entradas">
-                            Entradas
-                        </NavLink>
-                    </li>
-                    <li class="nav-item">
-                        <NavLink class="nav-link active" href="salidas">
-                            Salidas
-                        </NavLink>
-                    </li>
-                    <li class="nav-item">
-                        <NavLink class="nav-link active" href="BasedeDatos">
-                            Base de Datos
-                        </NavLink>
-                    </li>
-                    <li class="nav-item">
-                        <NavLink class="nav-link active" href="planner">
-                            Planner
-                        </NavLink>
-                    </li>
-                    <li class="nav-item">
-                        <NavLink class="nav-link active" href="shoporder">
-                            Shop Order
-                        </NavLink>
-                    </li>
-                    <li class="nav-item">
-                        <NavLink class="nav-link active" href="historial">
-                            Historial
-                        </NavLink>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        </a>
+
+        <a href="entradas">
+            Entradas
+        </a>
+
+        <a href="salidas">
+            Salidas
+        </a>
+
+        <a href="BasedeDatos">
+            Base de Datos
+        </a>
+
+        <a href="planner">
+            Planner
+        </a>
+
+        <a href="shoporder">
+            Shop Order
+        </a>
+
+        <a href="historial">
+            Historial
+        </a>
     </div>
 </nav>
 
