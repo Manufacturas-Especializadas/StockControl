@@ -2,6 +2,11 @@
 
 @using StockControl.Services;
 @using StockControl.Models;
+@using System.Globalization;
+@using System.Data;
+@using CsvHelper;
+@using CsvHelper.Configuration;
+@using System.Diagnostics;
 
 @inject PlannerServices services;
 @inject NavigationManager nav;
@@ -20,32 +25,43 @@
     </i>
 </a>
 
-<div class="d-flex justify-content-end align-items-center">
-    <button class="button-success-custom me-2 mt-2" @onclick="@(() => nav.NavigateTo("/planner/create"))">Registrar ShopOrder</button>
+<Alert @ref="alertref" Color="Color.Success" Visible="showAlert" Dismisable="true">
+    Archivo cargado correctamente
+</Alert>
+
+<Field>
+    <FilePicker Upload="ImportCsvFile" ShowMode="FilePickerShowMode.List"/>
+</Field>
+
+<div class="container mt-2 justify-content-center bg-white mt-2 p-2 shadow-sm">
+    <div class="text-center">
+        <input type="number" placeholder="Shop Order" class="input-number" @bind="ShopOrder" />
+        <input type="text" placeholder="Número de parte" class="input-text" @bind="PartNumber" />
+
+        <button type="button" class="button-custom" @onclick="filter">Filtrar</button>
+        <button type="button" class="button-custom-danger" @onclick="Clean">Limpiar</button>
+    </div>
 </div>
 
 <div class="table-responsive">
     <table class="styled-table">
         <thead>
             <tr>
-                <th>Shop Order</th>
-                <th>Cantidad</th>
-                <th>Fecha</th>
-                <th>Opciones</th>
+                <th>Orden de producción</th>
+                <th>Número de parte</th>
+                <th>Fecha de producción CARRIER</th>
+                <th>Cantidad requerida</th>
             </tr>
         </thead>
-        @if (planners != null)
+        @if (plannerArchivos != null)
         {
-            @foreach (var item in planners)
+            @foreach (var item in plannerArchivos)
             {
                 <tr>
-                    <td>@item.ShopOrder</td>
+                    <td>@item.OrdenProduccion</td>
+                    <td>@item.NumeroParte</td>
+                    <td>@item.FechaProduccionCarrier.Value.ToShortDateString()</td>
                     <td>@item.Cantidad</td>
-                    <td>@item.Fecha.Value.ToShortDateString()</td>
-                    <td>
-                        <button class="button-custom" @onclick="@(() => nav.NavigateTo($"/planneredit/{item.Id}"))">Editar</button>
-                        <button class="button-custom-danger" @onclick="@(() => ShowPlannerDetails(item))">Detalles</button>
-                    </td>
                 </tr>
             }
         }
@@ -56,51 +72,26 @@
              TotalPages="totalPages"
              SelectedPage="@SelectedPageAsync" />
 
-<Modal @ref="modalRef">
-    <ModalContent Centered>
-        <ModalHeader>
-            <ModalTitle>Detalles del Planner</ModalTitle>
-            <CloseButton />
-        </ModalHeader>
-        <ModalBody>
-            @if (selectedPlanner != null)
-            {
-                <p><strong>ShopOrder:</strong> @selectedPlanner.ShopOrder</p>
-                <p><strong>N.Parte:</strong> @selectedPlanner.Codigo</p>
-                <p><strong>Cantidad:</strong> @selectedPlanner.Cantidad2</p>
-                <p><strong>N.Parte:</strong> @selectedPlanner.Codigo2</p>
-                <p><strong>Cantidad:</strong> @selectedPlanner.Cantidad3</p>
-                <p><strong>N.Parte:</strong> @selectedPlanner.Codigo3</p>
-                <p><strong>Cantidad:</strong> @selectedPlanner.Cantidad4</p>
-                <p><strong>N.Parte:</strong> @selectedPlanner.Codigo4</p>
-                <p><strong>Cantidad:</strong> @selectedPlanner.Cantidad5</p>
-                <p><strong>N.Parte:</strong> @selectedPlanner.Codigo5</p>
-                <p><strong>Cantidad:</strong> @selectedPlanner.Cantidad6</p>
-                <p><strong>N.Parte:</strong> @selectedPlanner.Codigo6</p>
-                <p><strong>Cantidad:</strong> @selectedPlanner.Cantidad7</p>
-                <p><strong>Cantidad Total:</strong> @selectedPlanner.Cantidad</p>
-                <p><strong>Fecha:</strong> @selectedPlanner.Fecha.Value.ToShortDateString()</p>
-            }
-        </ModalBody>
-        <ModalFooter>
-            <Button Color="Color.Secondary" Clicked="@CloseModal">Cerrar</Button>
-        </ModalFooter>
-    </ModalContent>
-</Modal>
-
-
 @code {
     StockControl.Models.Planner selectedPlanner = null;
 
-    List<Models.Planner> planners = new List<Models.Planner>();
-    Models.Planner plannersEdit = new Models.Planner();
+    List<Models.Planner> planners = new();
+    List<PlannerArchivo> plannerArchivos = new();
+
+    Models.Planner planner = new();
 
     int idToDelete;
     private int currentPage = 1;
     private int totalPages;
     private int PageSize;
+    private int? ShopOrder;
+    private string PartNumber; 
+    bool FilterEmpty => string.IsNullOrEmpty(PartNumber) && !ShopOrder.HasValue;
+    bool showAlert = false;
 
     Modal modalRef;
+    Alert alertref;
+    DataTable dt = new();
 
     [Parameter]
     public int id { get; set; }
@@ -114,10 +105,9 @@
 
     private async Task LoadData()
     {
-        planners = await services.GetPagedPlanners(currentPage, 10);
-        totalPages = await services.GetTotalPagesAsync(10);
+        plannerArchivos = await services.GetPagedPlanners(currentPage, 15);
+        totalPages = await services.GetTotalPagesAsync(15);
     }
-
 
     private async Task SelectedPageAsync(int page)
     {
@@ -125,12 +115,71 @@
         await LoadData();
     }
 
-
-
     private void ShowPlannerDetails(Models.Planner planner)
     {
         selectedPlanner = planner;
         modalRef.Show();
+    }
+
+    private async Task ImportCsvFile(FileUploadEventArgs e)
+    {
+        try
+        {
+            var fileStream = e.File.OpenReadStream();
+
+            var ms = new MemoryStream();
+            await fileStream.CopyToAsync(ms);
+            fileStream.Close();
+            ms.Position = 0;
+
+            using(var reader = new StreamReader(ms))
+            using(var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)))
+            {
+                csv.Read();
+                csv.ReadHeader();
+
+                foreach(var header in csv.HeaderRecord)
+                {
+                    dt.Columns.Add(header);
+                }
+
+                while(await csv.ReadAsync())
+                {
+                    var row = dt.NewRow();
+                    for(int i = 0; i < csv.HeaderRecord.Length; i++)
+                    {
+                        row[i] = csv.GetField(i);
+                    }
+                    dt.Rows.Add(row);
+                }
+
+                await services.InsertDatabase(dt);
+                await LoadData();
+            }
+
+            showAlert = true;
+            StateHasChanged();
+            await Task.Delay(3000);
+        }
+        catch(Exception ex)
+        {
+            Debug.WriteLine($"Error al importar el archivo: {ex.Message}");
+        }
+    }
+
+    private async Task filter()
+    {
+        currentPage = 1;
+        plannerArchivos = await services.Filter(ShopOrder, PartNumber);
+        totalPages = await services.GetTotalPagesAsync(PageSize);
+    }
+
+    private async Task Clean()
+    {
+        ShopOrder = null;
+        PartNumber = string.Empty;
+        totalPages = await services.GetTotalPagesAsync(PageSize);
+        await LoadData();
     }
 
     private Task CloseModal()

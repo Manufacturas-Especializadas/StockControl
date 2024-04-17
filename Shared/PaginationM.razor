@@ -1,6 +1,6 @@
 ﻿<nav>
     <ul class="pagination">
-        @foreach (var link in Links)
+        @foreach (var link in VisibleLinks)
         {
             <li @onclick="@(() => InternalSelectedPage(link))" style="cursor: pointer" class="page-item @(link.Enable ? null : "disabled") @(link.Active ? "active" : null)">
                 <a class="page-link">@link.Text</a>
@@ -13,7 +13,19 @@
     [Parameter] public int CurrentPage { get; set; } = 1;
     [Parameter] public int TotalPages { get; set; }
     [Parameter] public EventCallback<int> SelectedPage { get; set; }
+
     List<PageModel> Links = new();
+
+    public List<PageModel> VisibleLinks
+    {
+        get
+        {
+            int range = 5;
+            int start = Math.Max(1, CurrentPage - range);
+            int end = Math.Min(TotalPages, CurrentPage + range);
+            return Links.Where(link => link.Page >= start && link.Page <= end).ToList();
+        }
+    }
 
     private async Task InternalSelectedPage(PageModel pageModel)
     {
@@ -59,7 +71,7 @@
             });
     }
 
-    class PageModel
+    public class PageModel
     {
         public string Text { get; set; } = null!;
         public int Page { get; set; }
