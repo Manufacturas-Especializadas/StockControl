@@ -26,12 +26,34 @@
     </i>
 </a>
 
-<h3 class="text-info">Cargar archivo</h3>
+<h3 class="text-info ms-3">
+    Cargar archivo
+</h3>
 
 <Alert @ref="alertRef" Color="Color.Success" Visible="showAlert" Dismisable="true">
     Archivo cargado correctamente
 </Alert>
-<InputFile OnChange="@ImportCsvFile" class="btn btn-primary mb-2 mt-3" />
+
+<Button Color="Color.Info" class="ms-3" Clicked="ShowModal">
+    Archivo
+</Button>
+
+<Modal @ref="modalref">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>CARGAR ARCHIVO</ModalTitle>
+            <CloseButton/>
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FilePicker Upload="ImportCsvFile" ShowMode="FilePickerShowMode.List"/>
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="CloseModal">Close</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
 
 <div class="table-responsive">
     <table class="styled-table">
@@ -50,7 +72,7 @@
                     <td>@item.FechaRegistro</td>
                 </tr>
             }
-        }
+        } 
     </table>
 </div>
 
@@ -67,6 +89,8 @@
     private int currentPage = 1;
     private int totalPages;
     private int PigeSize;
+    private bool loading = true;
+    private Modal modalref;
 
     Alert alertRef;
 
@@ -87,7 +111,7 @@
         await LoadData();
     }
 
-    private async Task ImportCsvFile(InputFileChangeEventArgs e)
+    private async Task ImportCsvFile(FileUploadEventArgs e)
     {
         try
         {
@@ -148,14 +172,14 @@
 
                 await services.InserDataBase(codigos);
 
+                await LoadData();
+
                 var filePath = Path.Combine(@"C:\Users\Innovacion\Documents\SRG100_data", e.File.Name);
 
                 if (File.Exists(filePath))
                 {
                     File.Delete(filePath);
                 }
-
-                salidas = await services.GetSalidas();
 
                 showAlert = true;
                 StateHasChanged();
@@ -167,5 +191,15 @@
         {
             Debug.WriteLine($"Error al cargar el archivo: {ex}");
         }
+    }
+
+    private Task ShowModal()
+    {
+        return modalref.Show();
+    }
+
+    private Task CloseModal()
+    {
+        return modalref.Hide();
     }
 }
