@@ -33,13 +33,17 @@
     <FilePicker Upload="ImportCsvFile" ShowMode="FilePickerShowMode.List"/>
 </Field>
 
-<div class="container mt-2 justify-content-center bg-white mt-2 p-2 shadow-sm">
+<div class="container mt-3 ms-5 justify-content-center bg-white p-2 shadow-sm d-inline-block">
     <div class="text-center">
         <input type="number" placeholder="Shop Order" class="input-number" @bind="ShopOrder" />
         <input type="text" placeholder="Número de parte" class="input-text" @bind="PartNumber" />
 
-        <button type="button" class="button-custom" @onclick="filter">Filtrar</button>
-        <button type="button" class="button-custom-danger" @onclick="Clean">Limpiar</button>
+        <button type="button" class="button-custom" @onclick="filter">
+            Filtrar
+        </button>
+        <button type="button" class="button-custom-danger" @onclick="Clean">
+            Limpiar
+        </button>
     </div>
 </div>
 
