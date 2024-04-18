@@ -133,7 +133,7 @@ namespace StockControl.Services
             }
         }
 
-        public async Task<List<PlannerArchivo>> Filter(int? ShopOrder, string NumeroParte)
+        public async Task<List<PlannerArchivo>> Filter(decimal? ShopOrder, string NumeroParte)
         {
             var query = _context.PlannerArchivos.AsQueryable();
 
